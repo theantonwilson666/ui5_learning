@@ -3,16 +3,13 @@
 
 1. В рабочей области делаем клон репозитория: 
 
-    `git clone https://AntonVilson@bitbucket.org/AntonVilson/learning.git`
+    `git clone https://github.com/theantonwilson666/ui5_learning.git`
 
 2. Скачиваем UI5 SDK последней версии(1.71.38)
 
     `https://tools.hana.ondemand.com/#sapui5`
     
-4. Создаем папку `sapui5-dist-static` в папке `UI5Task` и распаковываем туда содержимое SDK.
-
-
-чуть-чуть новое;
+4. Создаем папку `sapui5-dist-static` в папке `ui5_learning` и распаковываем туда содержимое SDK.
 
 
 5. В консоле прописываем

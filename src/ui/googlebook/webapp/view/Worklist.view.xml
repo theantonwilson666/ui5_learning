@@ -1,0 +1,153 @@
+<mvc:View 
+    controllerName="intheme.ivan_app.controller.Main" 
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true" 
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:l="sap.ui.layout"
+    xmlns:sv="sap.ui.comp.smartvariants"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartField="sap.ui.comp.smartfield">
+    <f:DynamicPage toggleHeaderOnTitleClick="true" 
+    showFooter="{state>/editMode}"
+     headerExpanded="false" 
+     preserveHeaderStateOnScroll="true"
+      class="sapUiNoContentPadding">
+        <f:content>
+            <VBox fitContainer="true">
+                <FlexBox
+                    height="100px"
+                    width="85%"
+                    alignItems="Center"
+                    justifyContent="End">
+                    <Button text="Показать избранное" id='today' press=".openIsbr" />
+
+                    <!-- <Text text="Книг в избранном"></Text> -->
+                </FlexBox>
+                <smartFilterBar:SmartFilterBar
+                                id="BookslFilterBar"
+                                entitySet="VolumeRegisterSet"
+                                useToolbar="false"
+                                considerSelectionVariants="true"
+                                enableBasicSearch="true"
+                                showFilterConfiguration="false"
+                                useDateRangeType="true"
+                                liveMode="false">
+                </smartFilterBar:SmartFilterBar>
+                <smartTable:SmartTable
+                        id="materialSmartTab"
+                        header="{i18n>TableTitle}"
+                        entitySet="VolumeRegisterSet"
+                        useExportToExcel="false"
+                        showRowCount="true"
+                        tableType="ResponsiveTable"
+                        useVariantManagement="false"
+                        useTablePersonalisation="true"
+                        showFullScreenButton="false"
+                        enableAutoBinding="true"
+                        requestAtLeastFields="Title,Authors,Id,Publisher,IsFavourite"
+                        demandPopin="true"
+                        editTogglable="false"
+                        smartFilterId="BookslFilterBar">
+                    <Table sticky="ColumnHeaders"
+                        alternateRowColors="true"
+                        growing="true"
+                        fixedLayout="false"
+                        growingThreshold="300"
+                        growingScrollToLoad="true"
+                      
+                        selectionChange="onSelectLine">
+                        <columns>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "1",
+                                                                    "columnKey": "Title",
+                                                                    "leadingProperty": "Title",
+                                                                    "sortProperty": "Title",
+                                                                    "filterProperty": "Title"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <Text text="Название"/>
+                                </header>
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "2",
+                                                                    "columnKey": "Authors",
+                                                                    "leadingProperty": "Authors",
+                                                                    "sortProperty": "Authors",
+                                                                    "filterProperty": "Authors"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <!-- <Text text="{/#VolumeRegister/Authors/@sap:label}"/> -->
+                                    <Text text="Автор"/>
+                                </header>
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "3",
+                                                                    "columnKey": "Publisher",
+                                                                    "leadingProperty": "Publisher",
+                                                                    "sortProperty": "Publisher",
+                                                                    "filterProperty": "Publisher"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <!-- <Text text="{/#VolumeRegister/Authors/@sap:label}"/> -->
+                                    <Text text="Издатель"/>
+                                </header>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem   
+                            type="Navigation" 
+                            press=".onPressColumnListItem" 
+                          
+                           highlight="{path:'IsFavourite', formatter:'.myformatter.formatRowHighlight'}"
+                            >
+                            <!-- highlight="Success" -->
+                                
+                                
+                                <cells>
+                                    <HBox
+                                  justifyContent="Start"
+                                    alignItems="Center"
+                                    width = "100%"
+                                    >
+                                        <Button icon="sap-icon://favorite"
+                                        press = ".addIsbrText"/>
+                                        
+                                        <!-- <Text text="{IsFavourite}"/> -->
+                                        <Text text="{Title}"/>
+                                    </HBox>
+                                </cells>
+                                <cells>
+                                <HBox alignItems="Center">
+                                    <Text text="{Authors}"/>
+                                    </HBox>
+                                </cells>
+                                <cells>
+                                  <HBox alignItems="Center">
+                                    <Text text="{Publisher}"/>
+                                    </HBox>
+                                </cells>
+                                
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </smartTable:SmartTable>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

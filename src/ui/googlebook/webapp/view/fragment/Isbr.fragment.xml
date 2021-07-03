@@ -1,0 +1,116 @@
+<core:FragmentDefinition
+xmlns:l="sap.ui.layout"
+xmlns:mvc="sap.ui.core.mvc"
+displayBlock="true"
+xmlns="sap.m"
+xmlns:f="sap.f"
+xmlns:fb='sap.ui.comp.filterbar'
+xmlns:form="sap.ui.layout.form"
+xmlns:sv='sap.ui.comp.smartvariants'
+xmlns:smartFilterBar='sap.ui.comp.smartfilterbar'
+xmlns:smartTable='sap.ui.comp.smarttable'
+xmlns:smartField='sap.ui.comp.smartfield'
+xmlns:core='sap.ui.core'
+xmlns:html="http://www.w3.org/1999/xhtml"
+xmlns:smartForm="sap.ui.comp.smartform">
+    <Dialog class="sapUiContentPadding" 
+            title="Избранное"
+            contentWidth="35%"
+            contentHeight="50%">
+        <content>
+          
+            <VBox>
+                    <smartTable:SmartTable
+											id="FovouriteBooks"
+											header="{i18n>TableTitle}"
+											entitySet="FavouriteBookSet"
+											useExportToExcel="false"
+											showRowCount="true"
+											tableType="ResponsiveTable"
+											useVariantManagement="false"
+ 											useTablePersonalisation="true"
+											showFullScreenButton="false"
+											enableAutoBinding="true"
+											editable="{state>/editMode}"
+											editTogglable="true"
+											editToggled="onEditToggled"
+											requestAtLeastFields="Authors,BookDescr,BookID"
+											demandPopin="true"
+											
+                                            >
+                   
+                    <Table 
+                                                    sticky="ColumnHeaders"
+                                                    alternateRowColors="true"
+                                                    growing="true"
+                                                    fixedLayout="false"
+                                                    growingThreshold="300"
+                                                    mode="{= (${state>/editMode} === true) ? 'Delete' : 'None'}"
+                                                    delete="onDeleteRow"
+                                                    growingScrollToLoad="true"
+                                                  >
+                        <columns>
+                           
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        			value='\{
+                                                                    "columnIndex": "0",
+                                                                    "columnKey": "BookDescr",
+                                                                    "leadingProperty": "BookDescr",
+                                                                    "sortProperty": "BookDescr",
+                                                                    "filterProperty": "BookDescr"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <Text text="Название"/>
+                                </header>
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData  
+																key="p13nData"
+                                                       			value='\{
+                                                                    "columnIndex": "1",
+                                                                    "columnKey": "Authors",
+                                                                    "leadingProperty": "Authors",
+                                                                    "sortProperty": "Authors",
+                                                                    "filterProperty": "Authors"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <Text text="Автор"/>
+                                </header>
+                            </Column>
+                        </columns>
+                        <items>
+                               <ColumnListItem   
+                            
+                            type="Navigation" 
+                            press=".onPressColumnListItemFromFav" 
+                         
+                           >
+                       
+                            
+                                
+                              
+                                <cells>
+                                     <Text text="{BookDescr}"/>
+                                </cells>
+                                <cells>
+                                    <Text text="{Authors}"/>
+                                 
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </smartTable:SmartTable>
+
+            </VBox>
+            
+        </content>
+        <buttons>
+            <Button text="Закрыть" press=".onCloseNewMeetUp"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

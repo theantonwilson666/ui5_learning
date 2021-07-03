@@ -1,0 +1,20 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:l="sap.ui.layout"
+        xmlns:smartField="sap.ui.comp.smartfield">
+    <Dialog class="sapUiContentPadding" 
+            title="{Title}"
+            contentWidth="35%"
+            contentHeight="50%">
+        <content>
+            <VBox>
+               <Text text="{Description}"/>
+            </VBox>
+            
+        </content>
+        <buttons>
+            <Button text="Закрыть" press=".onCloseNewMeetUp"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

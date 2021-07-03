@@ -1,0 +1,100 @@
+<mvc:View controllerName="intheme.currency.controller.Detail"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:l="sap.ui.layout"
+    xmlns:sv="sap.ui.comp.smartvariants"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:u="sap.ui.unified"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:micro="sap.suite.ui.microchart">
+    <f:DynamicPage id="detailPage" toggleHeaderOnTitleClick="true" showFooter="false" headerExpanded="false" preserveHeaderStateOnScroll="true" class="sapUiNoContentPadding">
+
+        <f:content>
+            <VBox>
+                <FlexBox id="DetailBox" alignItems="Center" justifyContent="SpaceAround">
+                    <l:VerticalLayout>
+                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
+                            <Text text='Символ валюты: {Coeff}'/>
+                            <Text id="AnyCoeff" class="sapUiTinyMarginLeft"/>
+                        </l:HorizontalLayout>
+                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
+                            <Text text='Значение по отношению к рублю:'/>
+                            <Text id="AnySourceCurr" class="sapUiTinyMarginLeft"/>
+                        </l:HorizontalLayout>
+                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
+                            <Text text='Страна:'/>
+                            <Text id="AnyCurrencyDescr" class="sapUiTinyMarginLeft"/>
+                        </l:HorizontalLayout>
+                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
+                            <Text text='Название валюты:'/>
+                            <Text id="AnyCurrencyId" class="sapUiTinyMarginLeft"/>
+                        </l:HorizontalLayout>
+                    </l:VerticalLayout>
+                    <l:VerticalLayout>
+                        <u:Calendar id="calendar" select="handleCalendarSelect" intervalSelection="true" weekNumberSelect="handleWeekNumberSelect"/>
+                    </l:VerticalLayout>
+                </FlexBox>
+
+                <!-- <FlexBox alignItems="Center" justifyContent="Center">
+                    <l:VerticalLayout>
+                        <Panel headerText="Regular Points">
+                            <l:Grid defaultSpan="XL6 L6 M6 S12" content="{/regular}">
+                                <l:VerticalLayout class="sapUiTinyMargin">
+                                    <Text text="{description}" width="17rem"/>
+
+                                    <micro:LineMicroChart showPoints="{showPoints}" size="{/size}" threshold="{threshold}" leftTopLabel="{leftTopLabel}" leftBottomLabel="{leftBottomLabel}" rightTopLabel="{rightTopLabel}" rightBottomLabel="{rightBottomLabel}" color="{color}" press="press" lines="{
+                                    path: '',
+                                    templateShareable: true
+                                    }" showThresholdValue="{showThresholdValue}" thresholdDisplayValue="{thresholdDisplayValue}" class="sapUiTinyMarginTop">
+
+                                        <micro:lines>
+                                            <micro:LineMicroChartLine points="{
+									        path: 'ChartPoints',
+									        templateShareable: true
+								            }">
+                                                <micro:LineMicroChartPoint x="{x}" y="{y}"/>
+                                            </micro:LineMicroChartLine>
+                                        </micro:lines>
+
+                                    </micro:LineMicroChart>
+                                </l:VerticalLayout>
+                            </l:Grid>
+                        </Panel>
+                    </l:VerticalLayout>
+
+                </FlexBox> -->
+
+                <l:FixFlex id='chartFixFlex' minFlexSize="250" class="graphFixFlex">
+                    <l:flexContent class="graphFlexContent">
+                        <viz:Popover id="idPopOver"></viz:Popover>
+                        <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='timeseries_line' legendVisible="true">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{ChartMdl>/Chart}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Date" value="{ChartMdl>Date}" dataType="date"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Value" value="{ChartMdl>CurrencyAmount}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Value"/>
+                                <viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </l:flexContent>
+                </l:FixFlex>
+            </VBox>
+
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -14,7 +14,7 @@
 
 5. В консоле прописываем
     
-    `npm init
+    `npm init`
     
     `npm install`
     

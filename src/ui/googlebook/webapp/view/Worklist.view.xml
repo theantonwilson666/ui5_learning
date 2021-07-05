@@ -38,7 +38,7 @@
                                 liveMode="false">
                 </smartFilterBar:SmartFilterBar>
                 <smartTable:SmartTable
-                        id="materialSmartTab"
+                        id="bookSmartTable"
                         header="{i18n>TableTitle}"
                         entitySet="VolumeRegisterSet"
                         useExportToExcel="false"
@@ -126,7 +126,9 @@
                                     width = "100%"
                                     >
                                         <Button icon="sap-icon://favorite"
-                                        press = ".addIsbrText"/>
+                                        press = ".addIsbrText"
+                                        enabled = "{path:'IsFavourite', formatter:'.myformatter.formatEnableButton'}"
+                                        />
                                         
                                         <!-- <Text text="{IsFavourite}"/> -->
                                         <Text text="{Title}"/>

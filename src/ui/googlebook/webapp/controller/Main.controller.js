@@ -6,7 +6,7 @@ sap.ui.define(
     "sap/ui/core/BusyIndicator",
     "intheme/ivan_app/formatter/myformatter",
   ],
-  function (Controller, MessageToast, Fragment,BusyIndicator, Formatter) {
+  function (Controller, MessageToast, Fragment, BusyIndicator, Formatter) {
     "use strict";
 
     return Controller.extend("intheme.ivan_app.controller.Main", {
@@ -51,7 +51,7 @@ sap.ui.define(
       },
 
       _onRouteMatched: function (oEvent) {
-        var oSmartTable = this.byId("materialSmartTab");
+        var oSmartTable = this.byId("bookSmartTable");
         this.setStateProperty("/layout", "OneColumn");
 
         if (oSmartTable) {
@@ -133,7 +133,7 @@ sap.ui.define(
       },
 
       getSmartTable: function () {
-        return this.getView().byId("materialSmartTab");
+        return this.getView().byId("bookSmartTable");
       },
 
       onEditToggled: function (oEvent) {
@@ -144,9 +144,9 @@ sap.ui.define(
         this.setStateProperty("/editMode", false);
       },
 
-      rebindTable: function (oEvent) {
-        this.getSmartTable().rebindTable();
-      },
+      // rebindTable: function (oEvent) {
+      //   this.getSmartTable().rebindTable();
+      // },
 
       onCloseNewMeetUp: function (oEvent) {
         oEvent.getSource().getParent().close();
@@ -194,11 +194,12 @@ sap.ui.define(
             sViewName: "intheme.ivan_app.view.fragment.Isbr",
             // sPath : po
           })
-          .then(function (oFragment) {
-            oFragment.open();
-            // this.getView().byId("FovouriteBooks").rebindTable()
-          }
-          // .bind(this)
+          .then(
+            function (oFragment) {
+              oFragment.open();
+              // this.getView().byId("FovouriteBooks").rebindTable()
+            }
+            // .bind(this)
           );
       },
 
@@ -244,44 +245,47 @@ sap.ui.define(
         var sMsgError = "Ошибка";
         var row = oEvent.getSource().getBindingContext().getObject();
         var icon = oEvent.getSource().getIcon();
-        var ID = oEvent.getSource().getBindingContext().getProperty("Id");
+        var sID = oEvent.getSource().getBindingContext().getProperty("Id");
 
         var oColumnListItem = oEvent.getSource().getParent();
         // var oTable = oColumnListItem.getParent();
         // oTable.setSelectedItem(oColumnListItem);
         debugger;
-        	BusyIndicator.show(0)
+        BusyIndicator.show(0);
+
         var oNewFavBook = this.getModel().createEntry("FavouriteBookSet", {
           properties: {
-            BookID: ID,
+            BookID: sID,
           },
         });
-        
-        this.getModel().create("/FavouriteBookSet", oNewFavBook, {
-          success: function (oData) {
-            debugger;
-          },
 
-          error: function (error) {
-            
-            debugger;
-          },
-        });
-          
+        // this.getModel().create("/FavouriteBookSet", oNewFavBook, {
+        //   success: function (oData) {
+        //     debugger;
+        //     MessageToast.show(sMsg);
+        //     this.UpdateIsbr();
+        //   },
+
+        //   error: function (error) {
+        //     debugger;
+        //   },
+        // });
+
         this.getModel().submitChanges({
-          
-          success : function(){
-            	BusyIndicator.hide();
-              MessageToast.show(sMsg);
-          },
+          success: function () {
+            BusyIndicator.hide();
+            MessageToast.show(sMsg);
 
-          error : function(){
-              BusyIndicator.hide();
-                MessageToast.show(sMsgError);
-          }
+            this.UpdateIsbr();
+          }.bind(this),
+
+          error: function () {
+            BusyIndicator.hide();
+            MessageToast.show(sMsgError);
+          },
         });
 
-        
+        // this.UpdateIsbr();
       },
       onDeleteRow: function (oEvent) {
         console.log("done");
@@ -291,15 +295,21 @@ sap.ui.define(
           .getObject().BookID;
         debugger;
         console.log(ID);
-        
+
         this.getModel().remove(`/FavouriteBookSet('${ID}')`, {
-        
-          success: function(){
-            debugger
+          success: function () {
+            debugger;
           },
-           error: function(){
-             debugger
-           }});
+          error: function () {
+            debugger;
+          },
+        });
+        this.UpdateIsbr();
+      },
+
+      UpdateIsbr: function () {
+        this.getView().byId("bookSmartTable").rebindTable();
+        //  this.getView().byId("bookSmartTable").getModel().refresh(true)
       },
     });
   }

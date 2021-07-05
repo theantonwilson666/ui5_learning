@@ -19,6 +19,7 @@ sap.ui.define([], function () {
            else{
              return "None"
            }
+          
         },
         FormatEBook:function(bStatus){
           if(bStatus){
@@ -51,6 +52,15 @@ sap.ui.define([], function () {
                 return "Книга";
          
         }
+        },
+        formatEnableButton:function(bStatus){
+
+          if(bStatus){
+            return false
+          }
+          else{
+            return true
+          }
         }
   };
 });

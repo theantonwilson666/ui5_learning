@@ -1,0 +1,17 @@
+{
+  "name": "e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grunt": "^1.4.1",
+    "grunt-contrib-connect": "^3.0.0",
+    "grunt-openui5": "^0.18.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}

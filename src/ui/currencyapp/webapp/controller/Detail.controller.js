@@ -54,7 +54,6 @@ sap.ui.define(
             .bindElement("/CurrencyRegister('" + oArr.CurrencyId + "')");
 
           this.setStateProperty("/layout", "TwoColumnsMidExpanded");
-          debugger;
         },
 
         handleCalendarSelect: function (oEvent) {
@@ -93,17 +92,14 @@ sap.ui.define(
         // },
 
         handleSelectThisWeek: function () {
-          debugger;
           this._selectWeekInterval(6);
         },
 
         handleSelectWorkWeek: function () {
-          debugger;
           this._selectWeekInterval(4);
         },
 
         handleWeekNumberSelect: function (oEvent) {
-          debugger;
           var oDateRange = oEvent.getParameter("weekDays"),
             iWeekNumber = oEvent.getParameter("weekNumber");
 
@@ -118,7 +114,6 @@ sap.ui.define(
         },
 
         _selectWeekInterval: function (iDays) {
-          debugger;
           var oCurrent = new Date(), // get current date
             iWeekStart = oCurrent.getDate() - oCurrent.getDay() + 1,
             iWeekEnd = iWeekStart + iDays, // end day is the first day + 6
@@ -150,7 +145,6 @@ sap.ui.define(
 
         //график делаем
         getDataForViz: function (oDateFrom, oDateTo) {
-          debugger;
           var oFilter = new sap.ui.model.Filter();
 
           var oModel = this.getView().getModel();
@@ -175,19 +169,15 @@ sap.ui.define(
           oModel.read("/HistoricCurrencySet", {
             filters: oFilter,
             success: function (oData) {
-              debugger;
               this.prepareViz(oData.results);
             }.bind(this),
             error: function () {
-              debugger;
               console.log("error");
             }.bind(this),
           });
         },
 
         getMaxMinRate: function(oData){
-
-          debugger;
 
           var aArr = [];
 
@@ -203,7 +193,6 @@ sap.ui.define(
 
 
         prepareViz: function (oData) {
-          debugger;
           Format.numericFormatter(ChartFormatter.getInstance());
           var formatPattern = ChartFormatter.DefaultPattern;
 
@@ -225,8 +214,8 @@ sap.ui.define(
 
               primaryScale: {
                 fixedRange: true,
-                maxValue: oMaxMin.max + 5,
-                minValue: oMaxMin.min - 5
+                maxValue: Math.round(oMaxMin.max + 5),
+                minValue: Math.round(oMaxMin.min - 5)
               }
             },
             legend: {
@@ -254,7 +243,7 @@ sap.ui.define(
             },
             title: {
               visible: true,
-              text: "Значение за год",
+              text: "Значение валюты за период",
             },
 
             interaction: {
@@ -270,7 +259,6 @@ sap.ui.define(
         },
         kek: function () {
           //получим компонент
-          debugger;
 
           this.getDataForViz();
         },

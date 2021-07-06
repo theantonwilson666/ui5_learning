@@ -49,7 +49,6 @@ sap.ui.define(
         
         this.navTo("DetailRoute", { query: oParams }, false);
         var aFiltersOfBar = this.byId("currencyFilterBar").getAggregation("filterGroupItems");
-        debugger
         
       },
 
@@ -167,12 +166,13 @@ sap.ui.define(
 
 
       ShowResultCalc: function(oEvent) {
-        var listBar = this.byId("currencyList1").getFilterGroupItems();
-        var listBarNew = listBar.filter(item => {
-          if(item.getName() !== "SourceCurr"){
-            item.destroy();
-        }});
         debugger
+        alert('Ты умничка!');
+
+        var iVariableCurrency = this.byId("valueInput").getValue(),
+        iCurrencyValue = this.byId("resultInput");
+        iCurrencyValue = iCurrencyValue.setValue(Math.floor(iVariableCurrency*1,515*1000)/1000);
+
       }
       
     });

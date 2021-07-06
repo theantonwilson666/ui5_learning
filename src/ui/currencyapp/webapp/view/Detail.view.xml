@@ -22,55 +22,26 @@
                 <FlexBox id="DetailBox" alignItems="Center" justifyContent="SpaceAround">
                     <l:VerticalLayout>
                         <l:HorizontalLayout class="sapUiTinyMarginBottom">
-                            <Text text='Символ валюты: {Coeff}'/>
+                            <Text text='Символ валюты:'/>
+                            <Text id="AnyCurrencyId" class="sapUiTinyMarginLeft"/>
+                        </l:HorizontalLayout>
+                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
+                            <Text text='Значение:'/>
                             <Text id="AnyCoeff" class="sapUiTinyMarginLeft"/>
                         </l:HorizontalLayout>
                         <l:HorizontalLayout class="sapUiTinyMarginBottom">
-                            <Text text='Значение по отношению к рублю:'/>
-                            <Text id="AnySourceCurr" class="sapUiTinyMarginLeft"/>
-                        </l:HorizontalLayout>
-                        <l:HorizontalLayout class="sapUiTinyMarginBottom">
-                            <Text text='Страна:'/>
+                            <Text text='Название валюты:'/>
                             <Text id="AnyCurrencyDescr" class="sapUiTinyMarginLeft"/>
                         </l:HorizontalLayout>
                         <l:HorizontalLayout class="sapUiTinyMarginBottom">
-                            <Text text='Название валюты:'/>
-                            <Text id="AnyCurrencyId" class="sapUiTinyMarginLeft"/>
+                            <Text text='Валюта в сравнении:'/>
+                            <Text id="AnySourceCurr" class="sapUiTinyMarginLeft"/>
                         </l:HorizontalLayout>
                     </l:VerticalLayout>
                     <l:VerticalLayout>
                         <u:Calendar id="calendar" select="handleCalendarSelect" intervalSelection="true" weekNumberSelect="handleWeekNumberSelect"/>
                     </l:VerticalLayout>
                 </FlexBox>
-
-                <!-- <FlexBox alignItems="Center" justifyContent="Center">
-                    <l:VerticalLayout>
-                        <Panel headerText="Regular Points">
-                            <l:Grid defaultSpan="XL6 L6 M6 S12" content="{/regular}">
-                                <l:VerticalLayout class="sapUiTinyMargin">
-                                    <Text text="{description}" width="17rem"/>
-
-                                    <micro:LineMicroChart showPoints="{showPoints}" size="{/size}" threshold="{threshold}" leftTopLabel="{leftTopLabel}" leftBottomLabel="{leftBottomLabel}" rightTopLabel="{rightTopLabel}" rightBottomLabel="{rightBottomLabel}" color="{color}" press="press" lines="{
-                                    path: '',
-                                    templateShareable: true
-                                    }" showThresholdValue="{showThresholdValue}" thresholdDisplayValue="{thresholdDisplayValue}" class="sapUiTinyMarginTop">
-
-                                        <micro:lines>
-                                            <micro:LineMicroChartLine points="{
-									        path: 'ChartPoints',
-									        templateShareable: true
-								            }">
-                                                <micro:LineMicroChartPoint x="{x}" y="{y}"/>
-                                            </micro:LineMicroChartLine>
-                                        </micro:lines>
-
-                                    </micro:LineMicroChart>
-                                </l:VerticalLayout>
-                            </l:Grid>
-                        </Panel>
-                    </l:VerticalLayout>
-
-                </FlexBox> -->
 
                 <l:FixFlex id='chartFixFlex' minFlexSize="250" class="graphFixFlex">
                     <l:flexContent class="graphFlexContent">

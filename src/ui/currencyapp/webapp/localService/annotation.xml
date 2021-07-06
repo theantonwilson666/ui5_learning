@@ -42,7 +42,7 @@
             </Annotations>
 
             <Annotations Target="ZCURRENCY_SRV.CurrencyRegister/SourceCurr">
-                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
                 <Annotation Term="Common.ValueList">
                     <Record>
                         <PropertyValue Property="CollectionPath" String="CurrencySHSet"/>

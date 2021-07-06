@@ -11,9 +11,7 @@
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
     xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:smartField="sap.ui.comp.smartfield">
-    <f:DynamicPage toggleHeaderOnTitleClick="true" 
-    showFooter="{state>/editMode}"
-     headerExpanded="false" 
+    <f:DynamicPage
      preserveHeaderStateOnScroll="true"
       class="sapUiNoContentPadding">
         <f:content>
@@ -42,8 +40,6 @@
                         header="{i18n>TableTitle}"
                         entitySet="VolumeRegisterSet"
                         useExportToExcel="false"
-                        showRowCount="true"
-                        tableType="ResponsiveTable"
                         useVariantManagement="false"
                         useTablePersonalisation="true"
                         showFullScreenButton="false"

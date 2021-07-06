@@ -1,4 +1,4 @@
-sap.ui.define(
+  sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
@@ -15,6 +15,7 @@ sap.ui.define(
         this.getRouter()
           .getRoute("WorklistRoute")
           .attachPatternMatched(this._onRouteMatched, this);
+         
       },
 
       getRouter: function () {
@@ -150,6 +151,7 @@ sap.ui.define(
 
       onCloseNewMeetUp: function (oEvent) {
         oEvent.getSource().getParent().close();
+        this.setStateProperty('/editMode', false)
       },
       loadDialog: function (oParams) {
         if (!this[oParams.sDialogName]) {

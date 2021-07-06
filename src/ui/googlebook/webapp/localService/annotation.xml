@@ -41,6 +41,20 @@
                 </Annotation>
             </Annotations>
          
+
+
+   <Annotations Target="ZGOOGLE_BOOKS_SRV.GenreSH">
+<Annotation Term="UI.LineItem">
+  <Collection>
+    <Record Type="UI.DataField">
+      <PropertyValue Property="Value" Path="GenreDescr"/>
+    </Record>
+  </Collection>
+</Annotation>
+</Annotations>
+
+
+
             <!-- <Annotations Target="ZMATERIAL_SERVICE_SRV.Material/MaterialID">
                 <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
                 <Annotation Term="Common.ValueList">

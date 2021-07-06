@@ -5,30 +5,30 @@ sap.ui.define([], function () {
   formatRub: function(asd){
     // return 4
     if(asd == '0.00'){
-      return "null"
+      return "null";
     }
     else{
-    return asd + " Руб"
+    return asd + " Руб";
     }
   },
     formatRowHighlight: function (sStatus) {
 
            if (sStatus) {
-             return "Success"
+             return "Success";
            }
            else{
-             return "None"
+             return "None";
            }
           
         },
         FormatEBook:function(bStatus){
           if(bStatus){
             
-              return 'Существует'
+              return 'Существует';
             }
             
             else{
-            return "Не существует"
+            return "Не существует";
             }
         },
         FormatSaleability:function(sStatus){
@@ -56,10 +56,10 @@ sap.ui.define([], function () {
         formatEnableButton:function(bStatus){
 
           if(bStatus){
-            return false
+            return false;
           }
           else{
-            return true
+            return true;
           }
         }
   };

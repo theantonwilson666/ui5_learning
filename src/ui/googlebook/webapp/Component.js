@@ -1,9 +1,10 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "intheme/ivan_app/model/models",
+    "sap/ui/core/BusyIndicator",
     "sap/ui/Device"
 
-], function (UIComponent, models, Device) {
+], function (UIComponent, models, BusyIndicator, Device) {
     "use strict";
     //   debugger
     return UIComponent.extend("intheme.ivan_app.Component", {
@@ -29,7 +30,13 @@ sap.ui.define([
             // set the device model
             this.setModel(models.createDeviceModel(),"device");
 
-            
+            this.getModel().attachBatchRequestSent(function(){
+                BusyIndicator.show(0);
+            })
+
+            this.getModel().attachBatchRequestCompleted(function(){
+                BusyIndicator.hide();
+            })
         }
     });
 });

@@ -5,15 +5,13 @@
     displayBlock="true" 
     xmlns="sap.m"
     xmlns:f="sap.f"
-    xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:l="sap.ui.layout"
-    xmlns:sv="sap.ui.comp.smartvariants"
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
     xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:smartField="sap.ui.comp.smartfield">
     <f:DynamicPage
      preserveHeaderStateOnScroll="true"
-      class="sapUiNoContentPadding">
+      class="sapUiNoContentPadding"
+      >
         <f:content>
             <VBox fitContainer="true">
                 <FlexBox
@@ -23,7 +21,6 @@
                     justifyContent="End">
                     <Button text="Показать избранное" id='today' press=".openIsbr" />
 
-                    <!-- <Text text="Книг в избранном"></Text> -->
                 </FlexBox>
                 <smartFilterBar:SmartFilterBar
                                 id="BookslFilterBar"
@@ -33,7 +30,8 @@
                                 enableBasicSearch="true"
                                 showFilterConfiguration="false"
                                 useDateRangeType="true"
-                                liveMode="false">
+                                liveMode="false"
+                                >
                 </smartFilterBar:SmartFilterBar>
                 <smartTable:SmartTable
                         id="bookSmartTable"
@@ -41,11 +39,8 @@
                         entitySet="VolumeRegisterSet"
                         useExportToExcel="false"
                         useVariantManagement="false"
-                        useTablePersonalisation="true"
-                        showFullScreenButton="false"
                         enableAutoBinding="true"
                         requestAtLeastFields="Title,Authors,Id,Publisher,IsFavourite"
-                        demandPopin="true"
                         editTogglable="false"
                         smartFilterId="BookslFilterBar">
                     <Table sticky="ColumnHeaders"
@@ -54,7 +49,6 @@
                         fixedLayout="false"
                         growingThreshold="300"
                         growingScrollToLoad="true"
-                      
                         selectionChange="onSelectLine">
                         <columns>
                             <Column>
@@ -85,7 +79,7 @@
                                 </customData>
                                 <header>
                                     <!-- <Text text="{/#VolumeRegister/Authors/@sap:label}"/> -->
-                                    <Text text="Автор"/>
+                                    <Text text="{i18n>Author}"/>
                                 </header>
                             </Column>
                             <Column>
@@ -109,10 +103,9 @@
                             <ColumnListItem   
                             type="Navigation" 
                             press=".onPressColumnListItem" 
-                          
                            highlight="{path:'IsFavourite', formatter:'.myformatter.formatRowHighlight'}"
                             >
-                            <!-- highlight="Success" -->
+                          
                                 
                                 
                                 <cells>

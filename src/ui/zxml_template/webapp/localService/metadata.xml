@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+   <edmx:DataServices m:DataServiceVersion="2.0">
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="XML_TEMPL_DATA_SRV" xml:lang="ru" sap:schema-version="1">
+         <EntityType Name="HeaderType" sap:label="Header" sap:content-version="1">
+            <Key>
+               <PropertyRef Name="Guid" />
+            </Key>
+            <Property Name="Guid" Type="Edm.Guid" Nullable="false" sap:label="GUID" />
+            <Property Name="String" Type="Edm.String" MaxLength="10" Nullable="false" sap:label="String"/>
+            <Property Name="Decimal" Type="Edm.Decimal" MaxLength="10" Nullable="false" sap:label="Decimal"/>
+            <Property Name="Boolean" Type="Edm.Boolean" MaxLength="10" Nullable="false" sap:label="Boolean"/>
+            <Property Name="Int16" Type="Edm.Int16" MaxLength="10" Nullable="false" sap:label="Int16"/>
+            <Property Name="Int32" Type="Edm.Int32" MaxLength="10" Nullable="false" sap:label="Int32"/>
+            <Property Name="Date" Type="Edm.DateTime" MaxLength="10" Nullable="false" sap:label="Date"/>
+            <Property Name="Time" Type="Edm.Time" MaxLength="10" Nullable="false" sap:label="Time"/>
+            <Property Name="Byte" Type="Edm.Byte" MaxLength="10" Nullable="false" sap:label="Byte"/>
+            <NavigationProperty Name="to_Body" 
+               Relationship="XML_TEMPL_DATA_SRV.assoc_HeaderBody" 
+               FromRole="FromRole_HeaderBody" 
+               ToRole="ToRole_HeaderBody"/>
+         </EntityType>
+
+         <EntityType Name="BodyType" sap:label="Body">
+            <Key>
+               <PropertyRef Name="Guid"/>
+               <PropertyRef Name="ID"/>
+            </Key>
+            <Property Name="Guid" Type="Edm.Guid" Nullable="false" sap:label="GUID" />
+            <Property Name="ID" Type="Edm.String" Nullable="false" sap:label="Body id"/>
+            <Property Name="Name" Type="Edm.String" Nullable="false" sap:label="Name"/>
+            <Property Name="Description" Type="Edm.String" Nullable="false" sap:label="Description"/>
+         </EntityType>
+
+         <Association Name="assoc_HeaderBody" sap:content-version="1">
+            <End Type="XML_TEMPL_DATA_SRV.HeaderType" Multiplicity="1" Role="FromRole_HeaderBody"/>
+            <End Type="XML_TEMPL_DATA_SRV.BodyType" Multiplicity="*" Role="ToRole_HeaderBody"/>
+            <ReferentialConstraint>
+               <Principal Role="FromRole_HeaderBody">
+                  <PropertyRef Name="Guid"/>
+               </Principal>
+               <Dependent Role="ToRole_HeaderBody">
+                  <PropertyRef Name="Guid"/>
+               </Dependent>
+            </ReferentialConstraint>
+         </Association>
+
+         <EntityContainer Name="XML_TEMPL_DATA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+            <EntitySet Name="HeaderSet" EntityType="XML_TEMPL_DATA_SRV.HeaderType" sap:content-version="1" />
+            <EntitySet Name="BodySet" EntityType="XML_TEMPL_DATA_SRV.BodyType" sap:content-version="1" />
+
+            <AssociationSet Name="set_assoc_HeaderBody" Association="XML_TEMPL_DATA_SRV.assoc_HeaderBody" sap:content-version="1">
+               <End EntitySet="HeaderSet" Role="FromRole_HeaderBody"/>
+               <End EntitySet="BodySet" Role="ToRole_HeaderBody"/>
+            </AssociationSet>
+         </EntityContainer>
+      </Schema>
+   </edmx:DataServices>
+</edmx:Edmx>

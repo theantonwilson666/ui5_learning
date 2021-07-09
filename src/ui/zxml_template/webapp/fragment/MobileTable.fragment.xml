@@ -1,0 +1,37 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:smt="sap.ui.comp.smarttable"
+    xmlns="sap.m"
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1">
+
+    <Table items="{path: 'facet>Target', formatter: 'AH.getNavigationPath'}">
+
+        <template:with path="facet>Target" helper="AH.gotoEntitySet" var="entitySet">
+            <template:with path="entitySet>entityType" helper="AH.gotoEntityType" var="entityType">
+
+                <columns>
+                    <template:repeat list="{entityType>com.sap.vocabularies.UI.v1.LineItem}" var="item">
+                        <Column>
+                            <template:with path="item>Value" helper="AH.resolvePath" var="navPath">
+                                <Label text="{
+                                    path: 'navPath>com.sap.vocabularies.Common.v1.Label',
+                                    formatter:'AH.format'
+                                }"/>
+                            </template:with>
+                        </Column>
+                    </template:repeat>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <template:repeat list="{entityType>com.sap.vocabularies.UI.v1.LineItem}" var="item">
+                            <Text text="{path: 'item>Value', formatter:'AH.format'}"/>
+                        </template:repeat>
+                    </ColumnListItem>
+                </items>
+
+            </template:with>
+        </template:with>
+    </Table>
+    
+</core:FragmentDefinition>

@@ -10,6 +10,7 @@ sapui5-dist-static/
 package-lock.json
 package.json
 
+
 # Compiled Java class files
 *.class
 

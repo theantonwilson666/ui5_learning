@@ -1,12 +1,8 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
-    "sap/m/MessageToast",
-  "sap/ui/core/BusyIndicator",
-  "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator",
+    "sap/ui/core/mvc/Controller"
   ],
-  function (Controller, MessageToast, BusyIndicator, Filter, FilterOperator) {
+  function (Controller) {
     "use strict";
 
     return Controller.extend("intheme.currency.controller.Main", {

@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "intheme/currency/controller/Main.controller",
     "sap/ui/unified/DateRange",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/core/format/DateFormat",
     "sap/ui/core/library",
     "sap/viz/ui5/format/ChartFormatter",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     DateRange,
-    JSONModelg,
     DateFormat,
     coreLibrary,
     ChartFormatter,

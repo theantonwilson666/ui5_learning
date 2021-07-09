@@ -1,0 +1,122 @@
+<mvc:View
+	controllerName="intheme.zui5_pokemons.controller.Detail"
+	xmlns:m="sap.m"
+	xmlns="sap.uxap"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:microchart="sap.suite.ui.microchart"
+	height="100%">
+	<ObjectPageLayout
+		id="ObjectPageLayout"
+		showTitleInHeaderContent="true"
+		alwaysShowContentHeader="false"
+		preserveHeaderStateOnScroll="false"
+		headerContentPinnable="true"
+		isChildPage="true"
+		upperCaseAnchorBar="false">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle id="dynamicHeaderTitle">
+
+				<snappedHeading>
+					<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+						<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+							<m:Title text="{PokemonName}" wrapping="true" class="sapUiTinyMarginEnd"/>
+						</m:FlexBox>
+					</m:FlexBox>
+				</snappedHeading>
+
+				<expandedHeading>
+					<m:Title text="{PokemonName}" wrapping="true" class="sapUiSmallMarginEnd"/>
+				</expandedHeading>
+
+				<navigationActions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+				</navigationActions>
+
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+
+		<headerContent>
+			<m:FlexBox id="flexBoxContent" wrap="Wrap" fitContainer="true" alignItems="Stretch">
+				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+					<m:Label text="{/#PokemonInfo/Height/@sap:label}"/>
+					<m:Text text="{Height}"/>
+				</m:VBox>
+				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+					<m:Label text="{/#PokemonInfo/Weight/@sap:label}"/>
+					<m:Text text="{Weight}"/>
+				</m:VBox>
+			</m:FlexBox>
+		</headerContent>
+
+		<sections>
+			<ObjectPageSection id="statsPageSection" title="Stats">
+				<subSections>
+					<ObjectPageSubSection title="Stats">
+						<m:FlexBox id="chartContainer" renderType="Bare" class="sapUiSmallMargin">
+							<m:items>
+								<microchart:ColumnMicroChart id="columnChart" width="100%" height="100px" press="press" allowColumnLabels="true">
+									<microchart:columns>
+										<microchart:ColumnMicroChartData value="{Stat_hp}" label="{/#PokemonInfo/Stat_hp/@sap:label}" color="Good"/>
+										<microchart:ColumnMicroChartData value="{Stat_attack}" label="{/#PokemonInfo/Stat_attack/@sap:label}" color="Good"/>
+										<microchart:ColumnMicroChartData value="{Stat_defense}" label="{/#PokemonInfo/Stat_defense/@sap:label}" color="Good"/>
+										<microchart:ColumnMicroChartData value="{Stat_specattack}" label="{/#PokemonInfo/Stat_specattack/@sap:label}" color="Good"/>
+										<microchart:ColumnMicroChartData value="{Stat_specdefense}" label="{/#PokemonInfo/Stat_specdefense/@sap:label}" color="Good"/>
+										<microchart:ColumnMicroChartData value="{Stat_speed}" label="{/#PokemonInfo/Stat_speed/@sap:label}" color="Good"/>
+									</microchart:columns>
+								</microchart:ColumnMicroChart>
+							</m:items>
+						</m:FlexBox>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+
+		<sections>
+			<ObjectPageSection id="abilitiesSection" title="Abilities">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:List
+								id="abilityList"
+								class="sapUiResponsiveMargin"
+								width="auto"
+								items="{PokemonsAbilities}">
+									<m:StandardListItem
+										title="Slot: {Slot} | Name: {AbilityName}"
+										description="{Effect}"
+										wrapping="true"/>
+							</m:List>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+
+		<sections>
+			<ObjectPageSection id="movesSection" title="Moves">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:List
+								id="movesList"
+								class="sapUiResponsiveMargin"
+								width="auto"
+								items="{PokemonsMoves}">
+									<m:StandardListItem
+										type="Active"
+										title="{MoveName}"
+										press="onMovePress"/>
+							</m:List>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+
+		<footer>
+			<m:OverflowToolbar>
+
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,140 @@
+{
+	"_version": "1.12.0",
+	"sap.app": {
+		"id": "intheme.zui5_pokemons",
+		"title": "Pokemons",
+		"type": "application",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"mainService": {
+			  	"uri": "/sap/opu/odata/sap/ZPOKEMONS_SRV",
+			  	"type": "OData",
+			  	"settings": {
+					"odataVersion": "2.0",
+					"annotations": ["annotation"]
+			  	}
+		   	},
+			"annotation": {
+			  	"type": "ODataAnnotation",
+			  	"uri": "localService/annotation.xml",
+			  	"settings": {
+					"localUri": "localService/annotation.xml"
+			  	}
+			}
+	   }
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "intheme.zui5_pokemons.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "flexibleColumnLayout"
+		},
+		"dependencies": {
+			"minUI5Version": "1.60.0",
+			"libs": {
+				"sap.ui.core": {
+					"lazy": false
+				},
+				"sap.m": {
+					"lazy": false
+				},
+				"sap.f": {
+					"lazy": false
+				},
+				"sap.uxap": {
+					"lazy": false
+				},
+				"sap.suite.ui.microchart": {
+					"lazy": false
+				}
+			}
+		},
+		"config": {
+			"fullWidth": true
+		},
+		"models": {
+			"": {
+				"dataSource": "mainService",
+				"settings": {
+					"serviceUrlParams": {
+				  		"sap-client": "100"
+					},
+					"defaultBindingMode": "TwoWay",
+					"useBatch": true,
+					"defaultCountMode": "Inline"
+			  	}
+			},
+			"state": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {
+					"isDraft": false,
+					"icons": {
+					"goHome": "sap-icon://home"
+					},
+				"editMode": false,
+				"layout": "OneColumn"
+				}
+			}
+		},
+		"resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+		"routing": {
+			"config": {
+				"routerClass": "sap.f.routing.Router",
+				"viewType": "XML",
+				"viewPath": "intheme.zui5_pokemons.view",
+				"controlId": "flexibleColumnLayout",
+				"transition": "slide",
+				"async": true
+			},
+			"routes": [
+				{
+					"pattern": ":layout:",
+					"name": "master",
+					"target": [
+						"master"
+					]
+				},
+				{
+					"pattern": "info/{pokemon}/{layout}",
+					"name": "detail",
+					"target": [
+						"master",
+						"detail"
+					]
+				},
+				{
+					"pattern": "moveInfo/{pokemon}/{move}/{layout}",
+					"name": "detailDetail",
+					"target": [
+						"master",
+						"detail",
+						"detailDetail"
+					]
+				}
+			],
+			"targets": {
+				"master": {
+					"viewName": "Master",
+					"controlAggregation": "beginColumnPages"
+				},
+				"detail": {
+					"viewName": "Detail",
+					"controlAggregation": "midColumnPages"
+				},
+				"detailDetail": {
+					"viewName": "DetailDetail",
+					"controlAggregation": "endColumnPages"
+				}
+			}
+		}
+	}
+}

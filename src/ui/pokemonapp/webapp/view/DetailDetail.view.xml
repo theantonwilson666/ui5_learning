@@ -1,0 +1,54 @@
+<mvc:View controllerName="intheme.zui5_pokemons.controller.DetailDetail"
+          displayBlock="true"
+		  xmlns="sap.f"
+		  xmlns:m="sap.m"
+		  xmlns:mvc="sap.ui.core.mvc"
+	      xmlns:smartForm="sap.ui.comp.smartform"
+	      xmlns:smartField="sap.ui.comp.smartfield"
+          height="100%">
+	<DynamicPage id="dPage" toggleHeaderOnTitleClick="false">
+		<title>
+			<DynamicPageTitle>
+				<heading>
+					<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+						<m:Title text="Move info" wrapping="true" class="sapUiTinyMarginEnd"/>
+					</m:FlexBox>
+				</heading>
+
+				<navigationActions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/endColumn/closeColumn} !== null }"/>
+				</navigationActions>
+
+			</DynamicPageTitle>
+		</title>
+		<content>
+
+            <smartForm:SmartForm id="smartFormColumn" title="{MoveName}">
+                <smartForm:layout>
+                    <smartForm:ColumnLayout columnsM="2" columnsL="3" columnsXL="4"/>
+                </smartForm:layout>
+                <smartForm:Group>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{Effect}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{DamageClass}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{Power}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{CritRate}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{Drain}" />
+                    </smartForm:GroupElement>
+                    <smartForm:GroupElement>
+                        <smartField:SmartField value="{Healing}" />
+                    </smartForm:GroupElement>
+                </smartForm:Group>
+            </smartForm:SmartForm>
+			
+		</content>
+	</DynamicPage>
+</mvc:View>

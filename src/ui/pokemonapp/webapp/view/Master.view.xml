@@ -1,0 +1,111 @@
+<mvc:View
+	controllerName="intheme.zui5_pokemons.controller.Master"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    height="100%">
+	<f:DynamicPage id="dynamicPage" toggleHeaderOnTitleClick="false" showFooter="{state>/editMode}">
+
+		<f:title>
+			<f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Pokemons List"/>
+                </f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+
+		<f:content>
+			<VBox fitContainer="true">
+				<smartFilterBar:SmartFilterBar id="smartFilterBar" 
+                                               entitySet="PokemonSet" 
+                                               enableBasicSearch="true" >
+                    <smartFilterBar:layoutData>
+					    <FlexItemData shrinkFactor="0"/>
+				    </smartFilterBar:layoutData>
+			    </smartFilterBar:SmartFilterBar>
+                <smartTable:SmartTable  id="mainSmartTable" 
+                                        entitySet="PokemonSet" 
+                                        smartFilterId="smartFilterBar"  
+                                        useExportToExcel="false"
+                                        header="Pokemons"
+                                        enableAutoBinding="true"
+                                        demandPopin="true"
+                                        editTogglable="true"
+                                        editable="{state>/editMode}"
+                                        class="sapUiResponsiveContentPadding"
+                                        initiallyVisibleFields="PokemonName,Type,Habitat">
+
+                    <smartTable:customToolbar>
+                        <OverflowToolbar design="Transparent">
+                            <ToolbarSpacer/>
+                                <Button icon="sap-icon://refresh"
+                                type="Transparent"
+                                press=".refreshTable"/>
+                        </OverflowToolbar>
+                    </smartTable:customToolbar>
+                                        
+                    <smartTable:layoutData>
+					    <FlexItemData growFactor="1" baseSize="0%"/>
+				    </smartTable:layoutData>
+
+                    <Table id="mainTable"
+                           alternateRowColors="true"
+                           sticky="ColumnHeaders"
+                           growing="true"
+                           fixedLayout="false"
+                           growingThreshold="200"
+                           delete=".onDeleteRow"
+                           mode="{= (${state>/editMode} === true) ? 'Delete' : 'None'}"
+                           growingScrollToLoad="true">
+                        <columns>
+                            <Column visible="{= ${state>/editMode} !== true }">
+                                <customData>
+                                    <core:CustomData key="p13nData" value='\{"columnKey":"PictureURL","columnIndex":"0","leadingProperty":"PictureURL"}'/>
+                                </customData>
+                                <Text text="Picture"></Text>
+                            </Column>
+                            <Column visible="{state>/editMode}">
+                                <customData>
+                                    <core:CustomData key="p13nData" value='\{"columnKey":"PictureURLText","columnIndex":"0","leadingProperty":"PictureURL"}'/>
+                                </customData>
+                                <Text text="PictureURL"></Text>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="tableItems" type="Active" press=".onListItemPress">
+                                <cells>
+                                    <Image src="{PictureURL}" class="pokePicture"/>
+                                </cells>
+                                <cells>
+                                    <smartField:SmartField value="{PictureURL}" editable="{state>/editMode}"/>
+                                </cells>
+                                <cells>
+                                    <smartField:SmartField value="{PokemonName}" editable="{state>/editMode}"/>
+                                </cells>
+                                <cells>
+                                    <smartField:SmartField value="{Type}" editable="{state>/editMode}"/>
+                                </cells>
+                                <cells>
+                                    <smartField:SmartField value="{Habitat}" editable="{state>/editMode}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                    
+			    </smartTable:SmartTable>
+			</VBox>
+		</f:content>
+
+        <f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Save" press=".onSaveChanges"/>
+				<Button type="Reject" text="Cancel" press=".onCancelChanges"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

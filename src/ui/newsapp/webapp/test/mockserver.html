@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>News Project Test</title>
+	<script
+		id="sap-ui-bootstrap"
+		src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_belize"
+		data-sap-ui-libs="sap.m"
+		data-sap-ui-resourceroots='{
+			"intheme.NewsProject": "../"
+		}'
+		data-sap-ui-oninit="module:intheme/NewsProject/test/initMockServer"
+		data-sap-ui-compatVersion="edge"
+		data-sap-ui-async="true">
+	</script>
+</head>
+<body class="sapUiBody" id="content">
+	<div data-sap-ui-component 
+         data-name="intheme.NewsProject" 
+         data-id="container" 
+         data-settings='{"id" : "NewsProject"}'>
+    </div>
+</body>
+</html>

@@ -1,11 +1,12 @@
 sap.ui.define([
-	"intheme/NewsProject/controller/Master.controller",
-	"sap/ui/core/format/DateFormat",
-	"sap/ui/model/odata/ODataMetadata",
+	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/BusyIndicator",
-	"sap/m/MessageToast",
 	"sap/m/MessageBox"
-], function (Controller, DateFormat, ODataMetadata, BusyIndicator, MessageToast, MessageBox) {
+], function (
+	Controller,
+	BusyIndicator,
+	MessageBox
+) {
 	"use strict";
 
 	return Controller.extend("intheme.NewsProject.controller.Detail", {
@@ -13,19 +14,36 @@ sap.ui.define([
 
 			this.oRouter = this.getOwnerComponent().getRouter();
 
-			var oSmartForm = this.getView().byId("ObjectPageLayout");
-			oSmartForm.setModel(this.getOwnerComponent().getModel("DataSets"));
+			// var oSmartForm = this.getView().byId("ObjectPageLayout");
+			// oSmartForm.setModel(this.getOwnerComponent().getModel());
 
 			this.oRouter
 				.getRoute("detail")
 				.attachPatternMatched(this._onNewsMatched, this);
 		},
 
+		setStateCurrentUser: function (oEvent) {
+			this.getModel().callFunction("/getCurrentUser", {
+				method: "GET",
+				success: function (oData) {
+					this.getModel("state").oData.currUser = oData.getCurrentUser.CURRENTUSER;
+				}.bind(this),
+
+				error: function (oError) {
+					this.showError(oError);
+				}.bind(this)
+			});
+		},
+
 		_onNewsMatched: function (oEvent) {
 			this._publishedAt = oEvent.getParameter("arguments").news || this._publishedAt || "0";;
-			this.getView().byId("ObjectPageLayout").bindElement("/NewsSet(datetime'" + this._publishedAt + "')");
-			// this.setStateProperty("/layout", "TwoColumnsMidExpanded");
+			this.byId("ObjectPageLayout").bindElement("/NewsSet(datetime'" + this._publishedAt + "')");
+			this.setStateCurrentUser(oEvent);
+		},
 
+		rebindList: function (oEvent) {
+			var oList = this.getCommentList(oEvent);
+			oList.getBinding("items").refresh(true);
 		},
 
 		onExit: function () {
@@ -44,7 +62,7 @@ sap.ui.define([
 		},
 
 		submitChanges: function (oEvents) {
-			return this.getModel("DataSets").submitChanges(oEvents);
+			return this.getModel().submitChanges(oEvents);
 		},
 
 		onSaveChanges: function (oEvent) {
@@ -62,76 +80,86 @@ sap.ui.define([
 
 			this.submitChanges({
 				success: function () {
-					MessageToast.show("Success");
 					BusyIndicator.hide();
 				}.bind(this),
 				error: function () {
-					MessageToast.show("Successn't");
 					BusyIndicator.hide();
 				}.bind(this),
 			});
 		},
 
-		//Метод получения комментария по списку (i = номер, начиная с нуля)
-		getComment: function (i) {
-			this.getView().byId("CommentList")
-				.getAggregation("items")[i]
-				.getBindingContext()
-				.getObject();
-		},
+		// setStateProperty: function (sPath, oValue, oContext, bAsyncUpdate) {
+		// 	return this.getModel("state").setProperty(
+		// 		sPath,
+		// 		oValue,
+		// 		oContext,
+		// 		bAsyncUpdate
+		// 	);
+		// },
 
 		getCommentList: function () {
 			return this.getView()
 				.byId("CommentList");
 		},
 
+		getFormDate: function (rawDate) {
+			var num = Number(rawDate.slice(11, 13)) + 3
+			var cleanDate = rawDate.slice(0, 4) + "-" +     //Год
+				rawDate.slice(5, 7) + "-" +                 //Месяц
+				rawDate.slice(8, 10) + " " +                //Число
+
+				String(num) + ":" +                         //Часы
+				rawDate.slice(16, 18) + ":" +               //Минуты
+				rawDate.slice(21, 23);                      //Секунды
+			return cleanDate;
+		},
 		//Метод для создания комментария
 		onPost: function (oEvent) {
-
-			var oFormat = DateFormat.getDateTimeInstance({ style: "full" });
-			var oDate = new Date();
-			var sDate = oFormat.format(oDate);
+			var oPubDate = new Date(this.getFormDate(this._publishedAt));
+			var oComDate = new Date(new Date().toString('yyyy-MM-dd HH:MM:SS'));
 			var sValue = oEvent.getParameter("value");
 
 
 			BusyIndicator.show();
-			var oParent = oEvent.getSource().getParent();
-			var oModel = this.getView().getModel();
 			var oList = this.getCommentList();
 			var oListItem = this.byId("CommentItem").clone();
-			// oListItem.setText(sValue);
-			// oListItem.setSender("IVANOVA");
 
-			var oNewCom = this.getModel("DataSets").createEntry("CommentSet", {
+			var oNewCom = this.getModel().createEntry("CommentSet", {
 				properties: {
-					content: sValue + " " + this._publishedAt,
-					publishedAt : Date()
-
+					publishedAt: oPubDate,
+					commentedAt: oComDate,
+					content: sValue
 				},
 			});
-
 			oNewCom.sPath = "/NewsSet(datetime'" + this._publishedAt + "')";
-			// oNewCom.sPath = "/CommentSet(datetime='" + this._publishedAt + "')";
-			oParent.setBindingContext(oNewCom);
 
-			oListItem.setBindingContext(oParent.getBindingContext());
+			oListItem.setBindingContext(oNewCom);
 			oList.insertItem(oListItem, 0);
 			this.onSaveChanges(oEvent);
 			BusyIndicator.hide();
 		},
 
+		getUpdate: function (oEvent) {
+			BusyIndicator.show();
+			this.onSaveChanges(oEvent);
+			BusyIndicator.hide();
+		},
+
 		handleClose: function () {
+			var oFeedInput = this.byId("FeedInput");
+			oFeedInput.setValue(null);
 			var sNextLayout = this.getModel().getProperty("/actionButtonsInfo/midColumn/closeColumn");
 			this.oRouter.navTo("master", { layout: sNextLayout });
 		},
 
 		DeleteComment: function (oListItem, oEvent) {
 			BusyIndicator.show();
-			this.getModel("DataSets").remove(oListItem.getBindingContext().getPath());
+			this.getModel().remove(oListItem.getBindingContext().getPath());
 			this.onSaveChanges(oEvent);
 			BusyIndicator.hide();
 		},
-		onDelActionPressed: function(oEvent) {
+
+		onDelActionPressed: function (oEvent) {
 			var oListItem = oEvent.getParameter("item");
 			var oController = this;
 			var Event = oEvent;

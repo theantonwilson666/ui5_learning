@@ -10,15 +10,13 @@
     xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:smartField="sap.ui.comp.smartfield">
     <f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
-        <!-- DynamicPage Title -->
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
-                    <Title text="News Set"/>
+                    <Title text="News"/>
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
-        <!-- DynamicPage Content -->
         <f:content>
             <VBox fitContainer="true">
                 <smartFilterBar:SmartFilterBar id="smartFilterBar" 
@@ -42,7 +40,8 @@
                                         demandPopin="true"
                                         class="sapUiResponsiveContentPadding" 
                                         initiallyVisibleFields="publishedAt,author,source,title"
-                                        enableAutoColumnWidth="true">
+                                        enableAutoColumnWidth="true"
+                                        ignoreFromPersonalisation="urlToImage,url,country,description">
                     <smartTable:customToolbar>
                         <OverflowToolbar design="Transparent">
                             <ToolbarSpacer/>
@@ -59,119 +58,10 @@
                             growing="true"
                             fixedLayout="false"
                             growingThreshold="200"
-                            growingScrollToLoad="true">
-                        <!-- <columns>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "0",
-                                                                    "columnKey": "Location",
-                                                                    "leadingProperty": "Location",
-                                                                    "sortProperty": "Location",
-                                                                    "filterProperty": "Location"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/Location/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "1",
-                                                                    "columnKey": "LocationText",
-                                                                    "leadingProperty": "LocationText",
-                                                                    "sortProperty": "LocationText",
-                                                                    "filterProperty": "LocationText"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/LocationText/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "2",
-                                                                    "columnKey": "XPos",
-                                                                    "leadingProperty": "XPos",
-                                                                    "sortProperty": "XPos",
-                                                                    "filterProperty": "XPos"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/XPos/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "3",
-                                                                    "columnKey": "YPos",
-                                                                    "leadingProperty": "YPos",
-                                                                    "sortProperty": "YPos",
-                                                                    "filterProperty": "YPos"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/YPos/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "4",
-                                                                    "columnKey": "LocNo",
-                                                                    "leadingProperty": "LocNo",
-                                                                    "sortProperty": "LocNo",
-                                                                    "filterProperty": "LocNo"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/LocNo/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "5",
-                                                                    "columnKey": "LocType",
-                                                                    "leadingProperty": "LocType",
-                                                                    "sortProperty": "LocType",
-                                                                    "filterProperty": "LocType"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/LocType/@sap:label}"/>
-                                </header>
-                            </Column>
-                            <Column>
-                                <customData>
-                                    <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "6",
-                                                                    "columnKey": "LocTypeText",
-                                                                    "leadingProperty": "LocTypeText",
-                                                                    "sortProperty": "LocTypeText",
-                                                                    "filterProperty": "LocTypeText"
-                                                                }'/>
-                                </customData>
-                                <header>
-                                    <Text text="{/#LocationRegister/LocTypeText/@sap:label}"/>
-                                </header>
-                            </Column>
-                        </columns> -->
+                            growingScrollToLoad="true"
+                            showOverlay="true">
                         <items>
                             <ColumnListItem id="CListItem" type="Active" press=".onPressColumnListItem">
-                                <!-- <cells>
-                                    <ObjectIdentifier title="{news>PublishedAt}" text="{news>publishedAt}"/>
-                                </cells> -->
                             </ColumnListItem>
                         </items>
                     </Table>

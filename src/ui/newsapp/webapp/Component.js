@@ -4,12 +4,18 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/f/library",
 	"sap/f/FlexibleColumnLayoutSemanticHelper"
-], function(UriParameters, UIComponent, JSONModel, library, FlexibleColumnLayoutSemanticHelper) {
+], function (
+	UriParameters,
+	UIComponent,
+	JSONModel,
+	library,
+	FlexibleColumnLayoutSemanticHelper
+) {
 	'use strict';
 
 	var LayoutType = library.LayoutType;
 
-	var Component=  UIComponent.extend('intheme.NewsProject.Component', {
+	var Component = UIComponent.extend('intheme.NewsProject.Component', {
 
 		metadata: {
 			manifest: 'json'
@@ -19,8 +25,8 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 
 			var oModel = new JSONModel();
-			this.setModel(oModel);
-			
+			this.setModel(oModel, "TypePage");
+
 			this.getRouter().initialize();
 		},
 
@@ -37,7 +43,7 @@ sap.ui.define([
 			return FlexibleColumnLayoutSemanticHelper.getInstanceFor(oFCL, oSettings);
 		},
 
-		_onBeforeRouteMatched: function(oEvent) {
+		_onBeforeRouteMatched: function (oEvent) {
 			var oModel = this.getModel("TypePage"),
 				sLayout = oEvent.getParameters().arguments.layout;
 

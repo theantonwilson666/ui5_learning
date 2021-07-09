@@ -14,39 +14,32 @@
     xmlns:form="sap.ui.comp.smartform"
     xmlns:smartField="sap.ui.comp.smartfield"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-
     <f:DynamicPage toggleHeaderOnTitleClick="true" showFooter="{state>/editMode}" headerExpanded="false" preserveHeaderStateOnScroll="true" class="sapUiNoContentPadding">
-
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
-                    <Title text="Rate of currencies and crypto"/>
+                    <Title text="Rate of currencies and crypto" />
                 </f:heading>
                 <f:expandedContent>
-                    <Label text="Сalculator Here"/>
+                    <Label text="Сalculator Here" />
                 </f:expandedContent>
                 <f:snappedContent>
-                    <Label text="Expand Calculator-->"/>
+                    <Label text="Expand Calculator" />
                 </f:snappedContent>
                 <f:snappedTitleOnMobile>
-                    <Title text="Header Title On Phone"/>
+                    <Title text="Header Title On Phone" />
                 </f:snappedTitleOnMobile>
-                <f:content>
-                </f:content>
+                <f:content></f:content>
             </f:DynamicPageTitle>
         </f:title>
-
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-
-
-
                     <FlexBox height="auto" alignItems="Center" justifyContent="SpaceBetween" width="350px">
                         <VBox>
                             <l:HorizontalLayout>
                                 <l:VerticalLayout>
-                                    <Label text="Выберите валюту"/>
+                                    <Label text="Выберите валюту" />
                                     <Input id="productInput1" placeholder="Enter currency" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" suggestionItems="{/CurrencyRegisterSet}">
                                         <suggestionItems>
                                             <core:Item text="{CurrencyId}" />
@@ -64,7 +57,7 @@
                             </l:HorizontalLayout>
                             <l:HorizontalLayout>
                                 <l:VerticalLayout>
-                                    <Label text="Value"/>
+                                    <Label text="Value" />
                                     <Input id="valueInput" placeholder="Enter number" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" suggestionItems="{/CurrencyRegisterSet}" type="Number">
                                         <suggestionItems>
                                             <core:Item text="{Coeff}" />
@@ -72,13 +65,13 @@
                                     </Input>
                                 </l:VerticalLayout>
                                 <l:VerticalLayout>
-                                    <Label text="Result"/>
+                                    <Label text="Result" />
                                     <Input id="resultInput" placeholder="Result" editable="false" class="sapUiTinyPaddingLeft">
                                     </Input>
                                 </l:VerticalLayout>
                             </l:HorizontalLayout>
                             <l:VerticalLayout class="blockResult">
-                                <Text text="Жмяк и результат"/>
+                                <Text text="Жмяк и результат" />
                                 <Button text="ZHMAYK" press="ShowResultCalc" ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                     <layoutData>
                                         <FlexItemData growFactor="1" />
@@ -87,127 +80,42 @@
                             </l:VerticalLayout>
                         </VBox>
                     </FlexBox>
-
                 </f:content>
-
             </f:DynamicPageHeader>
         </f:header>
-
         <f:content>
             <VBox fitContainer="true">
-                <IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
-                    <items>
-                        <IconTabFilter text="Currency">
+                <smartFilterBar:SmartFilterBar id="currencyFilterBar" entitySet="CurrencyRegisterSet" useToolbar="false" enableBasicSearch="true" showFilterConfiguration="true" useDateRangeType="false" liveMode="true">
+                    <smartFilterBar:layoutData>
+                        <FlexItemData shrinkFactor="0" />
+                    </smartFilterBar:layoutData>
+                </smartFilterBar:SmartFilterBar>
 
-                            <smartFilterBar:SmartFilterBar id="currencyFilterBar" entitySet="CurrencyRegisterSet" useToolbar="false" considerSelectionVariants="true" enableBasicSearch="true" showFilterConfiguration="true" useDateRangeType="true" liveMode="false">
-                                <smartFilterBar:layoutData>
-                                    <FlexItemData shrinkFactor="0"/>
-                                </smartFilterBar:layoutData>
-                            </smartFilterBar:SmartFilterBar>
+                <smartTable:SmartTable id="currencySmartTab" header="Список валют" entitySet="CurrencyRegisterSet" useExportToExcel="false" enableAutoBinding="true" editTogglable="true" editable="{state>/editMode}" editToggled="onEditToggled" smartFilterId="currencyFilterBar">
 
+                    <smartTable:customToolbar>
+                        <OverflowToolbar design="Transparent">
+                            <ToolbarSpacer />
+                            <content >
+                                <Text text="КРИПТА --->"/>
+                                <Button icon="sap-icon://commission-check" type="Transparent" press="onCrypto" />
+                            </content>
+                            <Button icon="sap-icon://refresh" type="Transparent" press="rebindTable" />
+                            <Button type="Transparent" iconFirst="false" enabled="{state>/editMode}" icon="sap-icon://add" press="onAddMaterial" />
+                        </OverflowToolbar>
+                    </smartTable:customToolbar>
+                    <Table selectionChange="onPressColumnListItem" id="tableCurrency" sticky="ColumnHeaders" alternateRowColors="true" growing="true" growingThreshold="300" includeItemInSelection="true" mode="SingleSelect">
+                    </Table>
 
-                            <smartTable:SmartTable id="currencySmartTab" header="Список валют" entitySet="CurrencyRegisterSet" useExportToExcel="false" showRowCount="true" tableType="ResponsiveTable" useVariantManagement="true" useTablePersonalisation="true" showFullScreenButton="false" enableAutoBinding="true" requestAtLeastFields="SourceCurrDescr,SourceCurr,CurrencyDescr,Coeff,CurrencyId" demandPopin="true" editTogglable="true" editable="{state>/editMode}" editToggled="onEditToggled" smartFilterId="currencyFilterBar" app:useSmartToggle="true" showPasteButton="true" paste="onPaste">
+                </smartTable:SmartTable>
 
-                                <smartTable:customToolbar>
-                                    <OverflowToolbar design="Transparent">
-                                        <ToolbarSpacer/>
-                                        <Button icon="sap-icon://refresh" type="Transparent" press="rebindTable"/>
-                                        <Button type="Transparent" iconFirst="false" enabled="{state>/editMode}" icon="sap-icon://add" press="onAddMaterial"/>
-                                    </OverflowToolbar>
-                                </smartTable:customToolbar>
-
-
-
-                                <Table sticky="ColumnHeaders" alternateRowColors="true" growing="true" fixedLayout="false" growingThreshold="300" growingScrollToLoad="true" selectionChange="onSelectLine" includeItemInSelection="true" selectionMode="MultiToggle">
-
-                                    <columns>
-
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData" value='\{
-                                                                                            "columnIndex": "0",
-                                                                                            "columnKey": "CurrencyId",
-                                                                                            "leadingProperty": "CurrencyId",
-                                                                                            "sortProperty": "CurrencyId",
-                                                                                            "filterProperty": "CurrencyId"
-                                                                                        }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CurrencyRegister/CurrencyId/@sap:label}"/>
-                                            </header>
-                                        </Column>
-
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData" value='\{
-                                                                                            "columnIndex": "2",
-                                                                                            "columnKey": "CurrencyDescr",
-                                                                                            "leadingProperty": "CurrencyDescr",
-                                                                                            "sortProperty": "CurrencyDescr",
-                                                                                            "filterProperty": "CurrencyDescr"
-                                                                                        }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CurrencyRegister/CurrencyDescr/@sap:label}"/>
-                                            </header>
-                                        </Column>
-
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData" value='\{
-                                                                                            "columnIndex": "3",
-                                                                                            "columnKey": "Coeff",
-                                                                                            "leadingProperty": "Coeff",
-                                                                                            "sortProperty": "Coeff",
-                                                                                            "filterProperty": "Coeff"
-                                                                                        }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CurrencyRegister/Coeff/@sap:label}"/>
-                                            </header>
-                                        </Column>
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData" value='\{
-                                                                                            "columnIndex": "4",
-                                                                                            "columnKey": "SourceCurr",
-                                                                                            "leadingProperty": "SourceCurr",
-                                                                                            "sortProperty": "SourceCurr",
-                                                                                            "filterProperty": "SourceCurr"
-                                                                                        }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CurrencyRegister/SourceCurr/@sap:label}"/>
-                                            </header>
-                                        </Column>
-
-                                    </columns>
-                                    <items>
-                                        <ColumnListItem type="Active" press=".onPressColumnListItem">
-                                            <cells>
-                                                <smartField:SmartField value="{CurrencyId}" editable="{state>/editMode}"/>
-                                            </cells>
-                                            <cells>
-                                                <smartField:SmartField value="{CurrencyDescr}" editable="{state>/editMode}"/>
-                                            </cells>
-                                            <cells>
-                                                <smartField:SmartField value="{Coeff}" editable="{state>/editMode}"/>
-                                            </cells>
-                                            <cells>
-                                                <smartField:SmartField value="{SourceCurr}" editable="{state>/editMode}"/>
-                                            </cells>
-                                        </ColumnListItem>
-                                    </items>
-                                </Table>
-
-                            </smartTable:SmartTable>
-                        </IconTabFilter>
-                        <IconTabFilter text="Crypto">
-                            <Text text="People content goes here ..." />
-                        </IconTabFilter>
-                    </items>
-                </IconTabBar>
             </VBox>
         </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <Button type="Accept" text="fgxb"/>
+                <Button type="Reject" text="Reject"/>
+            </OverflowToolbar>
+        </f:footer>
     </f:DynamicPage>
 </mvc:View>

@@ -18,7 +18,7 @@
     <f:DynamicPage id="detailPage" toggleHeaderOnTitleClick="true" showFooter="false" headerExpanded="false" preserveHeaderStateOnScroll="true" class="sapUiNoContentPadding">
 
         <f:content>
-            <VBox>
+            <VBox alignContent="Center">
                 <FlexBox id="DetailBox" alignItems="Center" justifyContent="SpaceAround">
                     <l:VerticalLayout>
                         <l:HorizontalLayout class="sapUiTinyMarginBottom">
@@ -37,6 +37,14 @@
                             <Text text='Валюта в сравнении:'/>
                             <Text id="AnySourceCurr" class="sapUiTinyMarginLeft"/>
                         </l:HorizontalLayout>
+                        <smartField:SmartLabel labelFor="idCompanyCode"/>
+                        <smartField:SmartField value="{CurrencyId}" id="idCompanyCode"/>
+                        <Label text="Выберите вторую валюту" />
+                        <Input id="currencyInput2" placeholder="Enter currency" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" suggestionItems="{/CurrencyRegisterSet}">
+                            <suggestionItems>
+                                <core:Item text="{CurrencyId}" />
+                            </suggestionItems>
+                        </Input>
                     </l:VerticalLayout>
                     <l:VerticalLayout>
                         <u:Calendar id="calendar" select="handleCalendarSelect" intervalSelection="true" weekNumberSelect="handleWeekNumberSelect"/>
@@ -44,7 +52,7 @@
                 </FlexBox>
 
                 <l:FixFlex id='chartFixFlex' minFlexSize="250" class="graphFixFlex">
-                    <l:flexContent class="graphFlexContent">
+                    <l:flexContent>
                         <viz:Popover id="idPopOver"></viz:Popover>
                         <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='timeseries_line' legendVisible="true">
                             <viz:dataset>
@@ -54,6 +62,7 @@
                                     </viz.data:dimensions>
                                     <viz.data:measures>
                                         <viz.data:MeasureDefinition name="Value" value="{ChartMdl>CurrencyAmount}"/>
+                                        <viz.data:MeasureDefinition name="Value" value="{ChartMdl>CurrencyAmount}" />
                                     </viz.data:measures>
                                 </viz.data:FlattenedDataset>
                             </viz:dataset>

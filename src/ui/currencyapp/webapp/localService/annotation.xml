@@ -41,6 +41,25 @@
                 </Annotation>
             </Annotations>
 
+            <Annotations Target="ZCURRENCY_SRV.CurrencyRegister">
+                <Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+                        <Collection>
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="CurrencyId"/>
+                            </Record>
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="CurrencyDescr"/>
+                            </Record>
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="Coeff"/>
+                            </Record>
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="SourceCurrDescr"/>
+                            </Record>
+                        </Collection>
+                </Annotation>
+            </Annotations>
+
             <Annotations Target="ZCURRENCY_SRV.CurrencyRegister/SourceCurr">
                 <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
                 <Annotation Term="Common.ValueList">
@@ -84,8 +103,6 @@
                     </Record>
                 </Annotation>
             </Annotations>
-
-
 
             <Annotations Target="ZCURRENCY_SRV.CurrencyRegister/SourceBank">
                 <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>

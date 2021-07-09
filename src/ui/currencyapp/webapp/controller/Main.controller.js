@@ -16,10 +16,6 @@ sap.ui.define(
           .attachPatternMatched(this._onRouteMatched, this);
       },
 
-      addfilterGroupItems: function() {
-        var smartFiledBar;
-      },
-
       getRouter: function () {
         return this.getOwnerComponent().getRouter();
       },
@@ -37,12 +33,12 @@ sap.ui.define(
         this.navTo("DetailRoute", { query: oParams }, false);
       },
 
-      onPressColumnListItem: function (oEvent) {
-        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        var oBindingObject = oEvent.getSource().getBindingContext().getObject();
+      onPressColumnListItem: function () {
+
+        var oBindingObject = this.getView().byId("tableCurrency").getSelectedItem().getBindingContext().getObject();
         
         var oParams = {
-            CurrencyId: oBindingObject.CurrencyId,
+          CurrencyId: oBindingObject.CurrencyId,
         };
 
         this.setStateProperty("/currentRow", oBindingObject);
@@ -57,8 +53,7 @@ sap.ui.define(
         this.setStateProperty("/layout", "OneColumn");
 
         if (oSmartTable) {
-          oSmartTable.getTable().removeSelections();
-          
+          oSmartTable.getTable().removeSelections() 
         }
         
       },
@@ -104,20 +99,11 @@ sap.ui.define(
         );
       },
 
-      onFireSearchAfterSelectSmartVariant: function (sFilterBarId) {
-        if (typeof sFilterBarId === "string" && sFilterBarId.length > 0) {
-          this.byId(sFilterBarId).fireSearch();
-          return true;
-        }
-
-        return false;
-      },
-
       navTo: function (sName, oParameters, bReplace) {
         this.getRouter().navTo(sName, oParameters, bReplace);
       },
 
-      getSmartTable: function () {
+      getSmartTableCurrency: function () {
         return this.getView().byId("currencySmartTab");
       },
 
@@ -130,44 +116,12 @@ sap.ui.define(
       },
 
       rebindTable: function (oEvent) {
-        this.getSmartTable().rebindTable();
+        this.getSmartTableCurrency().rebindTable();
+        this.changeTypeOfElements();
       },
-
-
-      onSearch: function (oEvent) {
-        // add filter for search
-        var aFilters = [];
-        var sQuery = oEvent.getSource().getValue();
-        if (sQuery && sQuery.length > 0) {
-          var filter = new Filter("CurrencyId", FilterOperator.Contains, sQuery);
-          aFilters.push(filter);
-        }
-  
-        // update list binding
-        var oList = this.byId("idList");
-        var oBinding = oList.getBinding("items");
-        oBinding.filter(aFilters, "Application");
-      },
-      
-      onSearch2: function (oEvent) {
-        // add filter for search
-        var aFilters = [];
-        var sQuery = oEvent.getSource().getValue();
-        if (sQuery && sQuery.length > 0) {
-          var filter = new Filter("CurrencyId", FilterOperator.Contains, sQuery);
-          aFilters.push(filter);
-        }
-  
-        // update list binding
-        var oList = this.byId("idList2");
-        var oBinding = oList.getBinding("items");
-        oBinding.filter(aFilters, "Application");
-      },
-
 
       ShowResultCalc: function(oEvent) {
-        debugger
-        alert('Ты умничка!');
+        alert('Ну почти работает');
 
         var iVariableCurrency = this.byId("valueInput").getValue(),
         iCurrencyValue = this.byId("resultInput");

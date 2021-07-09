@@ -2,14 +2,12 @@
 	controllerName="intheme.zui5_pokemons.controller.Master"
 	xmlns="sap.m"
 	xmlns:f="sap.f"
-    xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:fb="sap.ui.comp.filterbar"
-	xmlns:sv="sap.ui.comp.smartvariants"
     xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:smartField="sap.ui.comp.smartfield"
-    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar">
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    height="100%">
 	<f:DynamicPage id="dynamicPage" toggleHeaderOnTitleClick="false" showFooter="{state>/editMode}">
 
 		<f:title>
@@ -25,27 +23,21 @@
 				<smartFilterBar:SmartFilterBar id="smartFilterBar" 
                                                entitySet="PokemonSet" 
                                                enableBasicSearch="true" >
-				    <smartFilterBar:layoutData>
+                    <smartFilterBar:layoutData>
 					    <FlexItemData shrinkFactor="0"/>
 				    </smartFilterBar:layoutData>
 			    </smartFilterBar:SmartFilterBar>
-                <smartTable:SmartTable  id="LineItemsSmartTable" 
+                <smartTable:SmartTable  id="mainSmartTable" 
                                         entitySet="PokemonSet" 
-                                        smartFilterId="smartFilterBar"
-                                        tableType="ResponsiveTable" 
-                                        useExportToExcel="false"  
-                                        useVariantManagement="true" 
-                                        useTablePersonalisation="true" 
+                                        smartFilterId="smartFilterBar"  
+                                        useExportToExcel="false"
                                         header="Pokemons"
-                                        showRowCount="true" 
                                         enableAutoBinding="true"
                                         demandPopin="true"
                                         editTogglable="true"
                                         editable="{state>/editMode}"
-                                        editToggled="onEditToggled" 
                                         class="sapUiResponsiveContentPadding"
-                                        initiallyVisibleFields="PokemonName,Type,Habitat"
-                                        enableAutoColumnWidth="true">
+                                        initiallyVisibleFields="PokemonName,Type,Habitat">
 
                     <smartTable:customToolbar>
                         <OverflowToolbar design="Transparent">
@@ -60,15 +52,15 @@
 					    <FlexItemData growFactor="1" baseSize="0%"/>
 				    </smartTable:layoutData>
 
-                    <Table  id="LocationsTable"
-                            alternateRowColors="true"
-                            sticky="ColumnHeaders"
-                            growing="true"
-                            fixedLayout="false"
-                            growingThreshold="200"
-                            delete=".onDeleteRow"
-                            mode="{= (${state>/editMode} === true) ? 'Delete' : 'None'}"
-                            growingScrollToLoad="true">
+                    <Table id="mainTable"
+                           alternateRowColors="true"
+                           sticky="ColumnHeaders"
+                           growing="true"
+                           fixedLayout="false"
+                           growingThreshold="200"
+                           delete=".onDeleteRow"
+                           mode="{= (${state>/editMode} === true) ? 'Delete' : 'None'}"
+                           growingScrollToLoad="true">
                         <columns>
                             <Column visible="{= ${state>/editMode} !== true }">
                                 <customData>
@@ -78,15 +70,15 @@
                             </Column>
                             <Column visible="{state>/editMode}">
                                 <customData>
-                                    <core:CustomData key="p13nData" value='\{"columnKey":"PictureURLText","columnIndex":"0","leadingProperty":"PictureURLText"}'/>
+                                    <core:CustomData key="p13nData" value='\{"columnKey":"PictureURLText","columnIndex":"0","leadingProperty":"PictureURL"}'/>
                                 </customData>
                                 <Text text="PictureURL"></Text>
                             </Column>
                         </columns>
                         <items>
-                            <ColumnListItem id="columnListItems" type="Active" press=".onListItemPress">
+                            <ColumnListItem id="tableItems" type="Active" press=".onListItemPress">
                                 <cells>
-                                    <Image src="{PictureURL}" class="pokepic"/>
+                                    <Image src="{PictureURL}" class="pokePicture"/>
                                 </cells>
                                 <cells>
                                     <smartField:SmartField value="{PictureURL}" editable="{state>/editMode}"/>
@@ -112,7 +104,7 @@
 			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button type="Accept" text="Save" press=".onSaveChanges"/>
-				<Button type="Reject" text="Cancel" press=".onCancel"/>
+				<Button type="Reject" text="Cancel" press=".onCancelChanges"/>
 			</OverflowToolbar>
 		</f:footer>
 	</f:DynamicPage>

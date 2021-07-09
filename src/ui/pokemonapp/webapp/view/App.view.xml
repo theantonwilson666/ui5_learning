@@ -1,14 +1,12 @@
 <mvc:View 
 	controllerName="intheme.zui5_pokemons.controller.App"
 	xmlns="sap.f" 
-	xmlns:m="sap.m" 
 	xmlns:mvc="sap.ui.core.mvc"
 	displayBlock="true"
 	height="100%">
 		<FlexibleColumnLayout
 			id="flexibleColumnLayout"
 			stateChange="onStateChanged"
-			restoreFocusOnBackNavigation="true"
 			backgroundDesign="Solid"
-			layout="{/layout}"/>
+			layout="{state>/layout}"/>
 </mvc:View>

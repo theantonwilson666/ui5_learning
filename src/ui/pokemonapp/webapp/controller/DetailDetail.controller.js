@@ -5,11 +5,7 @@ sap.ui.define([
 
 	return Controller.extend("intheme.zui5_pokemons.controller.DetailDetail", {
 		onInit: function () {
-
 			this.oRouter = this.getOwnerComponent().getRouter();
-			this.oModel = this.getOwnerComponent().getModel();
-			this.getView().byId("dPage").setModel(this.getOwnerComponent().getModel("DataSets"));
-
 			this.oRouter.getRoute("detailDetail").attachPatternMatched(this._onPokemonMatched, this);
 		},
 
@@ -21,8 +17,7 @@ sap.ui.define([
 		},
 
 		handleClose: function () {
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
-			this.oRouter.navTo("detail", {layout: sNextLayout, pokemon: this._pokemon});
+			this.oRouter.navTo("detail", {layout: "TwoColumnsMidExpanded", pokemon: this._pokemon});
 		}
 	});
 });

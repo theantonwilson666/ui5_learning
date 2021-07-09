@@ -2,6 +2,7 @@
 	"_version": "1.12.0",
 	"sap.app": {
 		"id": "intheme.zui5_pokemons",
+		"title": "Pokemons",
 		"type": "application",
 		"applicationVersion": {
 			"version": "1.0.0"
@@ -34,17 +35,28 @@
 		"dependencies": {
 			"minUI5Version": "1.60.0",
 			"libs": {
-				"sap.ui.core": {},
-				"sap.m": {},
-				"sap.f": {},
-				"sap.uxap": {}
+				"sap.ui.core": {
+					"lazy": false
+				},
+				"sap.m": {
+					"lazy": false
+				},
+				"sap.f": {
+					"lazy": false
+				},
+				"sap.uxap": {
+					"lazy": false
+				},
+				"sap.suite.ui.microchart": {
+					"lazy": false
+				}
 			}
 		},
 		"config": {
 			"fullWidth": true
 		},
 		"models": {
-			"DataSets": {
+			"": {
 				"dataSource": "mainService",
 				"settings": {
 					"serviceUrlParams": {
@@ -62,7 +74,8 @@
 					"icons": {
 					"goHome": "sap-icon://home"
 					},
-					"editMode": false
+				"editMode": false,
+				"layout": "OneColumn"
 				}
 			}
 		},
@@ -80,8 +93,6 @@
 				"viewPath": "intheme.zui5_pokemons.view",
 				"controlId": "flexibleColumnLayout",
 				"transition": "slide",
-				"bypassed": {
-				},
 				"async": true
 			},
 			"routes": [

@@ -2,10 +2,28 @@
 	controllerName="intheme.NewsProject.controller.App"
 	displayBlock="true"
 	height="100%"
-	xmlns="sap.f"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc">
-	<FlexibleColumnLayout
-		id="flexibleColumnLayout"
-		backgroundDesign="Solid"
-		layout="{/layout}"/>
+    <TabContainer id="myTabContainer"
+				  class="sapUiResponsiveContentPadding sapUiResponsivePadding--header noCloseButtons">
+        <items >
+            <TabContainerItem name="Default">
+                <content>
+                    <f:FlexibleColumnLayout id="flexibleColumnLayout"
+											stateChange=".onStateChanged"
+											backgroundDesign="Solid"
+											layout="{state>/layout}"/>
+                </content>
+            </TabContainerItem>
+            <TabContainerItem name="NASA">
+                <content>
+                    <l:VerticalLayout id="containerLayout" width="100%">
+                        <mvc:XMLView viewName="intheme.NewsProject.view.Nasa"/>
+                    </l:VerticalLayout>
+                </content>
+            </TabContainerItem>
+        </items>
+    </TabContainer>
 </mvc:View>

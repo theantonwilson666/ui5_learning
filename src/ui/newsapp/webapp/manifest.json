@@ -8,22 +8,24 @@
 		},
 		"dataSources": {
 			"mainService": {
-			  "uri": "/sap/opu/odata/sap/ZLOC_IVANOVA_NEWS_SRV",
-			  "type": "OData",
-			  "settings": {
+				"uri": "/sap/opu/odata/sap/ZLOC_IVANOVA_NEWS_SRV",
+				"type": "OData",
+				"settings": {
 					"odataVersion": "2.0",
-					"annotations": ["annotation"],
+					"annotations": [
+						"annotation"
+					],
 					"localUri": "localService/metadata.xml"
-			  }
-		   },
+				}
+			},
 			"annotation": {
-			  "type": "ODataAnnotation",
-			  "uri": "localService/annotation.xml",
-			  "settings": {
+				"type": "ODataAnnotation",
+				"uri": "localService/annotation.xml",
+				"settings": {
 					"localUri": "localService/annotation.xml"
-			  }
+				}
 			}
-	  }
+		}
 	},
 	"sap.ui5": {
 		"rootView": {
@@ -45,35 +47,35 @@
 			"fullWidth": true
 		},
 		"models": {
-			"DataSets": {
+			"": {
 				"dataSource": "mainService",
 				"settings": {
 					"serviceUrlParams": {
-				  		"sap-client": "100"
+						"sap-client": "100"
 					},
 					"defaultBindingMode": "TwoWay",
 					"useBatch": true,
 					"defaultCountMode": "Inline"
-			  	}
+				}
 			},
 			"state": {
 				"type": "sap.ui.model.json.JSONModel",
 				"settings": {
-				  "isDraft": false,
-				  "icons": {
-					"goHome": "sap-icon://home"
-				  },
-				  "layout": "OneColumn",
-				  "editMode": false
+					"isDraft": false,
+					"icons": {
+						"goHome": "sap-icon://home"
+					},
+					"currUser": "",
+					"layout": "OneColumn"
 				}
 			}
 		},
 		"resources": {
-		  "css": [
-			{
-			  "uri": "css/style.css"
-			}
-		  ]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -82,8 +84,7 @@
 				"viewPath": "intheme.NewsProject.view",
 				"controlId": "flexibleColumnLayout",
 				"transition": "slide",
-				"bypassed": {
-				},
+				"bypassed": {},
 				"async": true
 			},
 			"routes": [
@@ -101,6 +102,13 @@
 						"master",
 						"detail"
 					]
+				},
+				{
+					"pattern": "nasa/{layout}",
+					"name": "nasa",
+					"target": [
+						"nasa"
+					]
 				}
 			],
 			"targets": {
@@ -111,6 +119,10 @@
 				"detail": {
 					"viewName": "Detail",
 					"controlAggregation": "midColumnPages"
+				},
+				"nasa": {
+					"viewName": "Nasa",
+					"controlAggregation": "beginColumnPages"
 				}
 			}
 		}

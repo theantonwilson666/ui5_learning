@@ -1,0 +1,70 @@
+<mvc:View 
+    xmlns:layout="sap.ui.layout"
+    controllerName="intheme.NewsProject.controller.Nasa"
+	displayBlock="true"
+	height="100%"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    >
+    <SplitApp
+		id="SplitApp"
+		initialDetail="detail"
+		initialMaster="master">
+        <detailPages>
+            <Page
+				id="APODPage"
+				title="{title}"
+				backgroundDesign= "Solid">
+                <layout:BlockLayout id="BlockLayout">
+                    <layout:BlockLayoutRow id="ContentRow">
+                        <layout:BlockLayoutCell id="ContentCell" width="60%">
+                        </layout:BlockLayoutCell>
+                        <layout:BlockLayoutCell id="TextCell" width="40%">
+                            <Text text="{explanation}"/>
+                        </layout:BlockLayoutCell>
+                    </layout:BlockLayoutRow>
+                </layout:BlockLayout>
+            </Page>
+            <Page id="detailDetail"
+                  title="Detail Detail"
+                  backgroundDesign= "Solid"
+                  showNavButton="true"
+                  navButtonPress=".onPressDetailBack">
+                <VBox class="sapUiSmallMargin">
+                    <Label text="This is Page 2" />
+                </VBox>
+            </Page>
+            <Page
+				id="TestPage"
+				title="Detail 3 Page"
+				backgroundDesign= "Solid"
+				showNavButton="true"
+				navButtonPress=".onPressDetailBack">
+                <Label text="This is Page 3" />
+            </Page>
+        </detailPages>
+        <masterPages>
+            <Page
+				id="master"
+				title="Browse"
+				backgroundDesign= "List">
+                <StandardListItem title="APOD (Astronomy Picture of the Day)" type="Active" custom:to="APODPage" press=".onAPODPress"/>
+                <StandardListItem title="To Master2" type="Navigation" press=".onPressGoToMaster" />
+            </Page>
+            <Page
+				id="master2"
+				title="Master 2"
+				backgroundDesign="List"
+				showNavButton="true"
+				navButtonPress=".onPressMasterBack">
+                <List itemPress=".onListItemPress">
+                    <items>
+                        <StandardListItem title="To Page 2" type="Active" custom:to="detailDetail" />
+                        <StandardListItem title="To Page 3" type="Active" custom:to="TestPage" />
+                    </items>
+                </List>
+            </Page>
+        </masterPages>
+    </SplitApp>
+</mvc:View>

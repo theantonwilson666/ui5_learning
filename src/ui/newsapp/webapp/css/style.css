@@ -1,7 +1,14 @@
 .descrText, .titleText {
     font-size: 20px;
+    width: 100%;
+    text-align: center;
 }
 
 .linkText {
-    font-size: 15px;
+    padding-top: 10px;
+    font-size: 17px;
+}
+
+div.sapMTabContainer.noCloseButtons > .sapMTabStripContainer > .sapMTabStrip > .sapMTSTabsContainer > .sapMTSTabs > .sapMTabStripItem > .sapMTSItemCloseBtnCnt {
+    visibility: hidden;
 }

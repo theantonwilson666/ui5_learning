@@ -17,9 +17,6 @@
         <headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <navigationActions>
-                    <m:Button
-						icon="sap-icon://action"
-						type="Transparent"/>
                     <m:OverflowToolbarButton 
                         type="Transparent"            
                         icon="sap-icon://decline"   
@@ -33,14 +30,13 @@
             <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd" width="100%">
                     <m:VBox>
-                        <m:Label class="titleText" text="Заголовок: {title}"/>
+                        <m:Label class="titleText" text="{title}"/>
                     </m:VBox>
                     <m:Image src="{urlToImage}" width="99%" alt=""/>
                     <m:VBox>
-                        <m:Text class="descrText" text="Описание: {description}"/>
+                        <m:Text class="descrText" text="{description}"/>
                     </m:VBox>
-                    <m:Link class="linkText" text="More..." href="{url}"
-				          ariaHasPopup="Dialog"/>
+                    <m:Link class="linkText" text="More..." href="{url}" target="_blank"/>
                 </m:VBox>
             </m:FlexBox>
         </headerContent>
@@ -62,6 +58,12 @@
                                 <form:content>
                                     <l:VerticalLayout class="sapUiContentPadding" width="100%">
                                         <l:content>
+                                            <m:OverflowToolbar>
+                                                <m:ToolbarSpacer/>
+                                                <m:Button icon="sap-icon://refresh"
+                                                        type="Transparent"
+                                                        press="rebindList"/>
+                                            </m:OverflowToolbar>
                                             <m:List id="CommentList" items="{NewsCom}">
                                                 <m:FeedListItem id="CommentItem"
                                                                 sender="{author}"
@@ -73,11 +75,11 @@
                                                                 timestamp="{commentedAt}"
                                                                 text="{content}"
                                                                 convertLinksToAnchorTags="All">
-                                                    <m:FeedListItemAction text="Edit" press="onActionPressed" />
-                                                    <m:FeedListItemAction text="Delete" visible="false" press="onDelActionPressed" />
+                                                    <m:FeedListItemAction text="Delete" icon="sap-icon://delete" press="onDelActionPressed" 
+                                                                          visible="{= (${state>/currUser} === ${author}) ? true : false}" />
                                                 </m:FeedListItem>
                                             </m:List>
-                                            <m:FeedInput
+                                            <m:FeedInput id="FeedInput"
                                                 post="onPost"
                                                 class="sapUiSmallMarginTopBottom" />
                                         </l:content>

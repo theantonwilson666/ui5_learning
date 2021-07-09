@@ -2,8 +2,15 @@
   [
     "intheme/ivan_app/controller/Base.controller",
     "sap/m/MessageToast",
+     "sap/ui/model/json/JSONModel",
+    "sap/ui/core/dnd/DragInfo",
+	"sap/ui/core/dnd/DropInfo",
+	"sap/ui/core/dnd/DropPosition",
+	"sap/ui/core/dnd/DropLayout",
+  "sap/f/dnd/GridDropInfo",
+  "intheme/ivan_app/RevealGrid/RevealGrid"
   ],
-  function (Controller, MessageToast) {
+  function (Controller, MessageToast, JSONModel, DragInfo, DropInfo, DropPosition, DropLayout, GridDropInfo,RevealGrid) {
     "use strict";
 
     return Controller.extend("intheme.ivan_app.controller.Main", {
@@ -15,6 +22,46 @@
           .attachPatternMatched(this._onRouteMatched, this);
          
       },
+
+	initData: function () {
+			this.byId("list1").setModel(new JSONModel([
+				{ title: "Open SAP Homepage 2x2" },
+				{ title: "Your personal information 3x3" },
+				{ title: "Appointments management 2x4" }
+			]));
+  },
+      attachDragAndDrop: function () {
+        var oList = this.byId("list1");
+        oList.addDragDropConfig(new DragInfo({
+          sourceAggregation: "items"
+        }));
+  
+        oList.addDragDropConfig(new DropInfo({
+          targetAggregation: "items",
+          dropPosition: DropPosition.Between,
+          dropLayout: DropLayout.Vertical,
+          drop: this.onDrop.bind(this)
+        }));
+      },
+
+     
+      onDropIndicatorSize: function (oDraggedControl) {
+        debugger
+        var oBindingContext = oDraggedControl.getBindingContext(),
+          oData = oBindingContext.getModel().getProperty(oBindingContext.getPath());
+  
+        if (oDraggedControl.isA("sap.m.StandardListItem")) {
+          return {
+            rows: oData.rows,
+            columns: oData.columns
+          };
+        }
+      },
+  
+     
+
+
+
 
       onPressColumnListItem: function (oEvent) {
         var oBindingObject = oEvent.getSource().getBindingContext().getObject();
@@ -37,6 +84,7 @@
 
 
       openIsbr: function () {
+       
         this.loadDialog
           .call(this, {
             sViewName: "intheme.ivan_app.view.fragment.Isbr",
@@ -102,10 +150,33 @@
         this.UpdateIsbr();
       },
 
-
       UpdateIsbr: function () {
         this.getView().byId("bookSmartTable").rebindTable();
-      },  
+      },
+
+      Check:function(){
+          this.loadDialog
+          .call(this, {
+            sViewName: "intheme.ivan_app.view.fragment.Check",
+            sDialogName: null
+          })
+          .then(
+            function (oFragment) {
+              oFragment.open();
+            }
+          );
+         
+      },
+      
+
+      Drag:function(){
+ this.attachDragAndDrop();
+ 	this.initData();
+      },
+
+
+
+     
     });
   }
 );

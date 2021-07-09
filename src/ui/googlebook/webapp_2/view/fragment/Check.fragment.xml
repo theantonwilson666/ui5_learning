@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        >
+    <Dialog class="sapUiContentPadding" 
+            title=""
+            contentWidth="35%"
+            contentHeight="50%"
+            >
+        
+             	<HBox renderType="Bare">
+			<List
+				id="list1"
+				class="sapUiSmallMargin"
+                headerText="Check"
+				width="400px"
+				items="{ path: '/' }"
+                >
+					<StandardListItem title="{title}" />
+					<!-- <StandardListItem title="Check0" />
+					<StandardListItem title="Check1" />
+					<StandardListItem title="Check2" />
+					<StandardListItem title="Check3" /> -->
+			</List>
+            </HBox>
+        <Button
+        text='drag'
+        press='.Drag'
+        ></Button>
+        <buttons>
+            <Button 
+            text="Закрыть" 
+            press=".onCloseDialog"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

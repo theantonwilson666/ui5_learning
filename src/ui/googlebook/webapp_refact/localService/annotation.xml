@@ -43,45 +43,40 @@
          
 
 
-        <Annotations Target="ZGOOGLE_BOOKS_SRV.VolumeRegister">
-            <Annotation Term="UI.LineItem">
-              <Collection>
-                <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" Path="Authors"/>
-                  <!-- <PropertyValue Property="Criticality" EnumMember="UI.CriticalityType/Negative"/> -->
-                </Record>
-                <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" Path="Publisher"/>
-                </Record>   
-              </Collection>
-            </Annotation>
-        </Annotations>
+   <Annotations Target="ZGOOGLE_BOOKS_SRV.GenreSH">
+<Annotation Term="UI.LineItem">
+  <Collection>
+    <Record Type="UI.DataField">
+      <PropertyValue Property="Value" Path="GenreDescr"/>
+    </Record>
+  </Collection>
+</Annotation>
+</Annotations>
 
-        <Annotations Target="ZGOOGLE_BOOKS_SRV.FavouriteBook">
-            <Annotation Term="UI.LineItem">
-              <Collection>
-                <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" Path="BookDescr"/>
-                </Record>   
-                <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" Path="Authors"/>
-                </Record>
-              </Collection>
-            </Annotation>
-        </Annotations>
 
-        <Annotations Target="ZUI5_DYNAMIC_TAB_SRV.TableType">
-            <Annotation Term="UI.LineItem">
-              <Collection>
-                <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" Path="Type"/>
-                </Record>   
-              </Collection>
-            </Annotation>
-        </Annotations>
 
- 
- 
+            <!-- <Annotations Target="ZMATERIAL_SERVICE_SRV.Material/MaterialID">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="MaterialSHSet"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="MaterialID"/>
+                                    <PropertyValue Property="ValueListProperty" String="Id"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="MaterialDescr"/>
+                                    <PropertyValue Property="ValueListProperty" String="Descr"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations> -->
+
 
              <Annotations Target="ZGOOGLE_BOOKS_SRV.VolumeRegister/Authors">
                 <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
@@ -103,7 +98,7 @@
 
 
  <Annotations Target="ZGOOGLE_BOOKS_SRV.VolumeRegister/Language">
-                <Annotation Term="Common.ValueListWithFixedValues" Bool="false"/>
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
                 <Annotation Term="Common.ValueList">
                     <Record>
                         <PropertyValue Property="CollectionPath" String="LanguageSHSet"/>
@@ -196,7 +191,7 @@
             </Annotations>
 
 
-    
+
 
 
         </Schema>

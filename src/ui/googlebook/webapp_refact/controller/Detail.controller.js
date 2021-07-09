@@ -2,7 +2,7 @@ sap.ui.define(
   [
     "intheme/ivan_app/controller/Main.controller",
   ],
-  function (Controller) {
+  function (Controller, Formatter) {
     "use strict";
    
     return Controller.extend(
@@ -17,23 +17,21 @@ sap.ui.define(
         },
 
         _onRouteMatched: function (oEvent) {
-
-        var oArr = oEvent.getParameter("arguments")["?query"];
-        var sPath = this.getModel().createKey("/VolumeRegisterSet", {
-					Id: oArr.BookID
-				});
-
+        
+          var oArr = oEvent.getParameter("arguments")["?query"];
           this.getView()
             .byId("DetailForm")
-            .bindElement(sPath);
+            .bindElement("/VolumeRegisterSet('"+oArr.BookID+"')");
 
           this.getView()
             .byId("OrderSmartTable")
-            .bindElement(sPath);
+            .bindElement("/VolumeRegisterSet('"+oArr.BookID+"')");
 
+
+          var pe = "/VolumeRegisterSet('"+oArr.BookID+"')";
 
           this.setStateProperty("/layout", "TwoColumnsBeginExpanded");
-          this.setStateProperty("/pathForDia", sPath);
+          this.setStateProperty("/pathForDia", pe);
         },
        
         ShowDescr: function () {
@@ -44,6 +42,7 @@ sap.ui.define(
            }).then(function (oFragment)
            {oFragment.open()})
 		},
+
 
       })
   })

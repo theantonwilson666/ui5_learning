@@ -18,6 +18,24 @@ sap.ui.define(
             return this.getOwnerComponent().getRouter();
           },
 
+          bindView: function (mParameters) {
+            this._initViewBinder();
+            return this.viewBinder.bind(mParameters);
+          },
+
+          _initViewBinder: function () {
+            var ViewBinderClass = this.getOwnerComponent()
+              .getViewBinder()
+              .getMetadata()
+              .getClass();
+            this.viewBinder = new ViewBinderClass();
+            this.viewBinder.setModel(this.getModel());
+            this.viewBinder.setView(this.getView());
+          },
+
+          getViewBinder: function () {
+            return this.viewBinder;
+          },
     
           getStateProperty: function (sPath, oContext) {
             return this.getModel("state").getProperty(sPath, oContext);
@@ -95,6 +113,51 @@ sap.ui.define(
           onEditToggled: function () {
             this.setStateProperty("/editMode", this.getStateProperty("/editMode"));
           },
+
+
+
+           onDrop: function (oInfo) {
+      
+        var oDragged = oInfo.getParameter("draggedControl"),
+          oDropped = oInfo.getParameter("droppedControl"),
+          sInsertPosition = oInfo.getParameter("dropPosition"),
+  
+          oDragContainer = oDragged.getParent(),
+          oDropContainer = oInfo.getSource().getParent(),
+  
+          oDragModel = oDragContainer.getModel(),
+          oDropModel = oDropContainer.getModel(),
+          oDragModelData = oDragModel.getData(),
+          oDropModelData = oDropModel.getData(),
+  
+          iDragPosition = oDragContainer.indexOfItem(oDragged),
+          iDropPosition = oDropContainer.indexOfItem(oDropped);
+  
+        // remove the item
+        var oItem = oDragModelData[iDragPosition];
+        oDragModelData.splice(iDragPosition, 1);
+ 
+        if (oDragModel === oDropModel && iDragPosition < iDropPosition) {
+          iDropPosition--;
+        }
+  
+        if (sInsertPosition === "After") {
+          iDropPosition++;
+        }
+  
+        // insert the control in target aggregation
+        oDropModelData.splice(iDropPosition, 0, oItem);
+  
+        if (oDragModel !== oDropModel) {
+          oDragModel.setData(oDragModelData);
+          oDropModel.setData(oDropModelData);
+        } else {
+          oDropModel.setData(oDropModelData);
+        }
+  
+        
+      },
+
 
         })
     }

@@ -2,8 +2,7 @@ sap.ui.define(
     [
       "sap/ui/core/mvc/Controller",
       "sap/ui/core/Fragment",
-      "intheme/ivan_app/formatter/myformatter",
-    
+      "intheme/ivan_app/formatter/myformatter"
     ],
     function (Controller,Fragment,Formatter) {
         "use strict";
@@ -18,6 +17,24 @@ sap.ui.define(
             return this.getOwnerComponent().getRouter();
           },
 
+          bindView: function (mParameters) {
+            this._initViewBinder();
+            return this.viewBinder.bind(mParameters);
+          },
+
+          _initViewBinder: function () {
+            var ViewBinderClass = this.getOwnerComponent()
+              .getViewBinder()
+              .getMetadata()
+              .getClass();
+            this.viewBinder = new ViewBinderClass();
+            this.viewBinder.setModel(this.getModel());
+            this.viewBinder.setView(this.getView());
+          },
+
+          getViewBinder: function () {
+            return this.viewBinder;
+          },
     
           getStateProperty: function (sPath, oContext) {
             return this.getModel("state").getProperty(sPath, oContext);
@@ -34,7 +51,6 @@ sap.ui.define(
               this.getView().getModel(sName)
             );
           },
-
     
           navTo: function (sName, oParameters, bReplace) {
             this.getRouter().navTo(sName, oParameters, bReplace);
@@ -55,7 +71,6 @@ sap.ui.define(
           },
     
           loadDialog: function (oParams) {
-         
             if (!this[oParams.sDialogName]) {
               return Fragment.load({
                 id: this.getView().sId,

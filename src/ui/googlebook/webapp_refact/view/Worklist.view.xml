@@ -19,7 +19,7 @@
                     width="85%"
                     alignItems="Center"
                     justifyContent="End">
-                    <Button text="Показать избранное" id='today' press=".openIsbr" />    
+                    <Button text="Показать избранное" id='today' press=".openIsbr" />
 
                 </FlexBox>
                 <smartFilterBar:SmartFilterBar
@@ -55,7 +55,7 @@
                                 <customData>
                                     <core:CustomData key="p13nData"
                                                         value='\{
-                                                                    "columnIndex": "0",
+                                                                    "columnIndex": "1",
                                                                     "columnKey": "Title",
                                                                     "leadingProperty": "Title",
                                                                     "sortProperty": "Title",
@@ -65,7 +65,39 @@
                                 <header>
                                     <Text text="Название"/>
                                 </header>
-                            </Column>        
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "2",
+                                                                    "columnKey": "Authors",
+                                                                    "leadingProperty": "Authors",
+                                                                    "sortProperty": "Authors",
+                                                                    "filterProperty": "Authors"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <!-- <Text text="{/#VolumeRegister/Authors/@sap:label}"/> -->
+                                    <Text text="{i18n>Author}"/>
+                                </header>
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "3",
+                                                                    "columnKey": "Publisher",
+                                                                    "leadingProperty": "Publisher",
+                                                                    "sortProperty": "Publisher",
+                                                                    "filterProperty": "Publisher"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <!-- <Text text="{/#VolumeRegister/Authors/@sap:label}"/> -->
+                                    <Text text="Издатель"/>
+                                </header>
+                            </Column>
                         </columns>
                         <items>
                             <ColumnListItem   
@@ -73,6 +105,9 @@
                             press=".onPressColumnListItem" 
                            highlight="{path:'IsFavourite', formatter:'.myformatter.formatRowHighlight'}"
                             >
+                          
+                                
+                                
                                 <cells>
                                     <HBox
                                   justifyContent="Start"
@@ -83,14 +118,26 @@
                                         press = ".addIsbrText"
                                         enabled = "{path:'IsFavourite', formatter:'.myformatter.formatEnableButton'}"
                                         />
+                                        
+                                        <!-- <Text text="{IsFavourite}"/> -->
                                         <Text text="{Title}"/>
                                     </HBox>
-                                </cells>      
+                                </cells>
+                                <cells>
+                                <HBox alignItems="Center">
+                                    <Text text="{Authors}"/>
+                                    </HBox>
+                                </cells>
+                                <cells>
+                                  <HBox alignItems="Center">
+                                    <Text text="{Publisher}"/>
+                                    </HBox>
+                                </cells>
+                                
                             </ColumnListItem>
                         </items>
                     </Table>
                 </smartTable:SmartTable>
-
             </VBox>
         </f:content>
     </f:DynamicPage>

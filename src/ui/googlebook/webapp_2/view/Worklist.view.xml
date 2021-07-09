@@ -19,7 +19,9 @@
                     width="85%"
                     alignItems="Center"
                     justifyContent="End">
-                    <Button text="Показать избранное" id='today' press=".openIsbr" />    
+                    <Button text="Показать избранное" id='today' press=".openIsbr" />
+                    <Button text="check" press=".Check" />
+                   
 
                 </FlexBox>
                 <smartFilterBar:SmartFilterBar
@@ -91,6 +93,57 @@
                     </Table>
                 </smartTable:SmartTable>
 
+
+
+
+                <smartTable:SmartTable
+                id="bookSmartTable5"
+                header="k"
+                entitySet="TableTypeSet"
+                useExportToExcel="false"
+                useVariantManagement="false"
+                enableAutoBinding="true"
+                requestAtLeastFields="Type"
+                editTogglable="false"
+                >
+                <Table sticky="ColumnHeaders"
+                        alternateRowColors="true"
+                        growing="true"
+                        fixedLayout="false"
+                        growingThreshold="300"
+                        growingScrollToLoad="true"
+                        selectionChange="onSelectLine">
+                        <columns>
+                            <Column>
+                                <customData>
+                                    <core:CustomData key="p13nData"
+                                                        value='\{
+                                                                    "columnIndex": "0",
+                                                                    "columnKey": "Type",
+                                                                    "leadingProperty": "Type",
+                                                                    "sortProperty": "Type",
+                                                                    "filterProperty": "Type"
+                                                                }'/>
+                                </customData>
+                                <header>
+                                    <Text text="Название"/>
+                                </header>
+                            </Column>        
+                        </columns>
+                        <items>
+                            <ColumnListItem   
+                            type="Navigation" 
+                            press=".onPressColumnListItem" 
+                            >
+                                <cells>
+                               
+                                        <Text text="{Type}"/>
+                                    
+                                </cells>      
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+        </smartTable:SmartTable>
             </VBox>
         </f:content>
     </f:DynamicPage>

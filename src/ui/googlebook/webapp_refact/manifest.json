@@ -114,13 +114,7 @@
         "async": true,
         "viewPath": "intheme.ivan_app.view",
         "controlAggregation": "beginColumnPages",
-        "controlId": "layout",
-        "sample": {
-          "files": [
-            "RevealGrid/RevealGrid.js",
-            "RevealGrid/RevealGrid.css"
-          ]
-        }
+        "controlId": "layout"
       },
       "routes": [
         {
@@ -132,8 +126,13 @@
           "name": "DetailRoute",
           "pattern": "Detail/:?query:",
           "target": ["DetailTarget","WorklistTarget"]
-        }
+        },
 
+        {
+          "name": "DetailDetailRoute",
+          "pattern": "DetailDetail/:?query:",
+          "target": ["DetailDetailTarget"]
+        }
       ],
       "targets": {
         "WorklistTarget": {
@@ -149,13 +148,20 @@
           "viewName": "Detail",
           "viewLevel": "2",
           "controlAggregation": "midColumnPages"
+        },
+
+        "DetailDetailTarget": {
+          "viewType": "XML",
+          "viewId":"DetailDetail",
+          "viewName": "DetailDetail",
+          "viewLevel": "3",
+          "controlAggregation": "endColumnPages",
+          "clearControlAggregation": true
         }
 
         
         
       }
-     
-
     }
   }
 }

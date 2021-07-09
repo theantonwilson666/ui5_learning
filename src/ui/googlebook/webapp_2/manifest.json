@@ -132,8 +132,13 @@
           "name": "DetailRoute",
           "pattern": "Detail/:?query:",
           "target": ["DetailTarget","WorklistTarget"]
-        }
+        },
 
+        {
+          "name": "StudyRoute",
+          "pattern": "Study",
+          "target": ["StudyTarget"]
+        }
       ],
       "targets": {
         "WorklistTarget": {
@@ -149,6 +154,15 @@
           "viewName": "Detail",
           "viewLevel": "2",
           "controlAggregation": "midColumnPages"
+        },
+
+        "StudyTarget": {
+          "viewType": "XML",
+          "viewId":"Study",
+          "viewName": "Study",
+          "viewLevel": "3",
+          "controlAggregation": "endColumnPages",
+          "clearControlAggregation": true
         }
 
         

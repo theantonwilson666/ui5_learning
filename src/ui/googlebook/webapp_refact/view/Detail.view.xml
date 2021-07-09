@@ -1,0 +1,109 @@
+<mvc:View 
+    controllerName="intheme.ivan_app.controller.Detail" 
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true" 
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartForm="sap.ui.comp.smartform">
+   
+                    <FlexBox
+                   
+				alignItems="Center"
+				justifyContent="Center"
+                direction = 'Column'
+                
+                >
+                        <smartForm:SmartForm id="DetailForm"   title="{Title}">
+                            <smartForm:layout>
+                                <smartForm:ColumnLayout columnsM="2" columnsL="2" columnsXL="2"/>
+                            </smartForm:layout>
+                        </smartForm:SmartForm>
+
+                                    <Button text='Посмотреть описание'
+                                            press = '.ShowDescr'/>
+                       
+                         	<l:VerticalLayout
+                              id="OrderSmartTable"
+	                        	class="sapUiContentPadding"
+	                        	width="450px">
+	                            	<l:content>
+	                            		<List
+	                            			headerText="" >
+	                            			<DisplayListItem
+	                            				label="Подзаголовок"
+	                            				value="{SubTitle}"/>
+	                            			<DisplayListItem
+	                            				label="Автор"
+	                            				value="{Authors}" />
+	                            			<DisplayListItem
+	                            				label="Язык"
+	                            				value="{Language}" />
+	                            		
+                                                
+	                            			<DisplayListItem
+	                            				label="Тип"
+	                            				value="
+												{
+													path:'PrintType',
+													formatter:'.myformatter.formatPrint'
+													}"
+												/>
+	                            			<DisplayListItem
+	                            				label="Жанр"
+	                            				value="{Categories}"/>
+	                            			<DisplayListItem
+	                            				label="Число страниц"
+	                            				value="{PageCount}"/>
+	                            			<DisplayListItem
+	                            				label="Ограничение по возрасту"
+	                            				value="
+												{
+													path:'MaturityRating',
+													formatter:'.myformatter.formatMR'
+													}"
+												/>
+	                            			<!-- <DisplayListItem
+	                            				label="Дата публикации"
+	                            				value="{PublishedDate}"/> -->
+	                            			<DisplayListItem
+	                            				label="Доступность"
+	                            				value="{
+													
+													path:'SaleabilityDescr',
+													formatter:'.myformatter.FormatSaleability'
+													}"
+													
+													/>
+	                            			<DisplayListItem
+	                            				label="Цена"
+	                            				value="{
+													path:'ListPriceAmount',
+													formatter:'.myformatter.formatRub'
+													}"
+													/>
+	                            			<DisplayListItem
+	                            				label="Электронная версия"
+	                            				
+												value="{
+													path:'IsEbook',
+													formatter:'.myformatter.FormatEBook'
+													}"
+												/> 
+	                            			
+	                            		</List>
+										
+                                        <Link
+				                            text="Открыть книгу"
+				                            target="_blank"
+				                            href="{VolumnLink}" />
+                   
+		
+	                            	</l:content>
+                        	</l:VerticalLayout>
+               
+                       </FlexBox>
+ 
+</mvc:View>

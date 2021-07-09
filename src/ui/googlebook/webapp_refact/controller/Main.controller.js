@@ -9,7 +9,6 @@
     return Controller.extend("intheme.ivan_app.controller.Main", {
    
       onInit: function () {
-      
         this.getRouter()
           .getRoute("WorklistRoute")
           .attachPatternMatched(this._onRouteMatched, this);
@@ -37,6 +36,7 @@
 
 
       openIsbr: function () {
+       
         this.loadDialog
           .call(this, {
             sViewName: "intheme.ivan_app.view.fragment.Isbr",
@@ -50,7 +50,8 @@
 
 
       onPressColumnListItemFromFav: function (oEvent) {
-        oEvent.getSource().getParent().getParent().getParent().close();
+       
+        oEvent.getSource().getParent().getParent().getParent().getParent().close();
         var oBindingObject = oEvent.getSource().getBindingContext().getObject();
         var oParams = {
           BookID: oBindingObject.BookID,
@@ -102,10 +103,9 @@
         this.UpdateIsbr();
       },
 
-
       UpdateIsbr: function () {
         this.getView().byId("bookSmartTable").rebindTable();
-      },  
+      },
     });
   }
 );

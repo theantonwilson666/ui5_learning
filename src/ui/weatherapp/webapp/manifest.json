@@ -90,6 +90,7 @@
           "icons": {
             "goHome": "sap-icon://home"
           },
+          "time": "",
           "layout": "OneColumn",
           "editMode": false
         }

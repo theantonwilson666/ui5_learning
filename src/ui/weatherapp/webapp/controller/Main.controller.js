@@ -6,16 +6,13 @@ sap.ui.define(
     "sap/ui/unified/CalendarLegendItem",
     "sap/ui/unified/DateTypeRange",
     "sap/ui/model/odata/ODataUtils",
-    "sap/ui/model/Filter",
     "sap/ui/core/library",
     "intheme/zweather_app/formatter/CommonFormatter",
+    "intheme/zweather_app/Util/Util",
     "sap/ui/core/Fragment",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/model/odata/v2/ODataModel",
-    "sap/viz/ui5/data/FlattenedDataset",
     "sap/viz/ui5/format/ChartFormatter",
     "sap/viz/ui5/api/env/Format",
-    "./InitPage",
   ],
   function (
     Controller,
@@ -24,83 +21,106 @@ sap.ui.define(
     CalendarLegendItem,
     DateTypeRange,
     ODataUtils,
-    Filter,
     coreLibrary,
     Formatter,
+    Util,
     Fragment,
     JSONModel,
-    ODataModel,
-    FlattenedDataset,
     ChartFormatter,
     Format,
-    InitPageUtil
   ) {
     "use strict";
 
     var CalendarType = coreLibrary.CalendarType;
 
     return Controller.extend(
-      "sap.ui.unified.sample.CalendarSingleDaySelection.CalendarSingleDaySelection", {
-        oFormatYyyymmdd: null,
+      "intheme.zweather_app.controller.Main", {
+
         commonFormatter: Formatter,
 
+        Util: Util,
+
+        oFormatYyyymmdd: DateFormat.getInstance({
+          pattern: "yyyy-MM-dd",
+          calendarType: CalendarType.Gregorian
+        }),
+
+
         onInit: function () {
-          this.oFormatYyyymmdd = DateFormat.getInstance({
-            pattern: "yyyy-MM-dd",
-            calendarType: CalendarType.Gregorian
-          });
-
-          var oViewModel = new JSONModel();
-
-          oViewModel.setProperty("/chart/", this._chart);
-
-          this.getView().setModel(oViewModel, "view");
+          var oSmartTable = this.byId('weatherlSmartTab')
+          this.Util.modifyRebindSmartTable(oSmartTable)
+          this.Util.modifyAddSmartTable(oSmartTable)
         },
 
-        onAfterRendering: function () {
-
-          var oCal = this.byId("calendar"),
-            oLeg = this.byId("legend"),
-            oRefDate;
-
-          oRefDate = new Date();
-
+        addSpecialDays: function () {
+          var oCal = this.byId("calendar")
           var oCurDay = Date().split(" ")[2];
-          oLeg.addItem(
-            new CalendarLegendItem({
-              text: "активные дни",
-              color: "#ff69b4",
-            })
-          );
           for (var i = 0; i < 5; i++) {
             oCal.addSpecialDate(
               new DateTypeRange({
-                startDate: new Date(oRefDate.setDate(+oCurDay - 1 - i)),
+                startDate: this.activeDays(+oCurDay, i),
                 type: "Type11",
-                // color: "#ff69b4",
               })
             );
           }
         },
+
+        selectPage: function (oEvent) {
+          this.addSpecialDays()
+          var key = oEvent.getSource().getSelectedKey()
+          // var key = oEvent.getParameter('key')
+          var arrOfPagesId = this.getArrOfPagesId(oEvent)
+          var arrOfSubHeadersId = arrOfPagesId.map(el => el + 'Header')
+
+          for (var cnt = 0; cnt < arrOfPagesId.length; cnt++) {
+            if (key == arrOfPagesId[cnt] && this.checkVisible(arrOfPagesId[cnt])) {
+              this.changeVisible(arrOfPagesId, cnt);
+              this.changeVisible(arrOfSubHeadersId, cnt)
+            }
+          }
+
+        },
+
+        changeVisible: function (arrOfPagesId, cnt) {
+          for (var i = 0; i < arrOfPagesId.length; i++) {
+            this.byId(arrOfPagesId[i]).setVisible(false)
+          }
+          this.byId(arrOfPagesId[cnt]).setVisible(true)
+        },
+
+        checkVisible: function (currentPage) {
+          return this.byId(currentPage).getVisible() !== true ? true : false //Проверка на то видна ли выбранная страница 
+          //(нужно для случая если пользователь кликнет на уже актиный TabFilter)
+        },
+
+        getArrOfPagesId: function (oEvent) {
+          var arrOfFiltersObj = oEvent.getSource().getItems()
+          var arrOfPagesName = arrOfFiltersObj.map(el => el.getKey())
+          return arrOfPagesName
+        },
+
+        activeDays: function (oCurDay, i) {
+          var oRefDate = new Date();
+          return new Date(oRefDate.setDate(oCurDay - 1 - i))
+        },
+
         handleCalendarSelect: function (oEvent) {
           var oCalendar = oEvent.getSource();
-
           this._updateText(oCalendar);
-
-          // this.showInfo();
-          // console.log(this.handleSelectToday);
-          // this.getView().byId("calendar").addStyleClass("hm");
+          var oCity = this.byId("thisCity").getValue()
+          if (oCity) {
+            var oСhosenDay = this.byId("calendar").getSelectedDates()[0].getStartDate().getTime(); //выбранный день
+            this.byId("smartForm").bindElement(`/CityWeatherOnDateSet(Date=${this.formatedDate(oСhosenDay+10800000)},City='${oCity}')`);
+            this.getDataForViz()
+          }
         },
 
         _updateText: function (oCalendar) {
-          debugger;
+
           var oText = this.byId("selectedDate"),
             aSelectedDates = oCalendar.getSelectedDates(),
             oUnixDate = this.byId("unixDate"),
             oDate = aSelectedDates[0].getStartDate();
-
-          // this.oFormatYyyymmdd.format(oDate).split('-').reduce((el,baze)=> +el + +baze)
-          // console.log(this.oFormatYyyymmdd.format(oDate));
 
           var unixTime =
             new Date(this.oFormatYyyymmdd.format(oDate).split("-")).getTime() /
@@ -110,15 +130,6 @@ sap.ui.define(
           oUnixDate.setText(unixTime);
           return unixTime;
         },
-        // getUnixDate: function (oCalendar) {
-        //     var oText = this.byId("selectedDate"),
-        //         aSelectedDates = oCalendar.getSelectedDates(),
-        //         oUnixDate = this.byId('unixDate'),
-        //         oDate = aSelectedDates[0].getStartDate();
-        //     var unixTime = new Date(this.oFormatYyyymmdd.format(oDate).split('-'))
-        //         .getTime() / 1000 + 7200
-        //     return 1
-        // },
 
         handleSelectToday: function () {
           var oCalendar = this.byId("calendar");
@@ -130,88 +141,72 @@ sap.ui.define(
             })
           );
           this._updateText(oCalendar);
-
-          debugger;
-        },
-
-        cutNum: function (num) {
-          return parseInt(num * 10000) / 10000;
         },
 
         onSelectCity: function (oEvent) {
-          debugger;
-
-          var oContext = oEvent.getSource().getBindingContext();
-          var oCity = oContext.getObject().City;
+          var oContext = oEvent.getParameters().listItem.getBindingContext(),
+            oCity = oContext.getProperty('City'),
+            oCountry = oContext.getProperty('Country'),
+            oSmartForm = this.byId("smartForm"),
+            oTodayTime = new Date().getTime(),
+            oCalendar = this.byId("calendar"),
+            oModel = oEvent.getSource().getModel(),
+            path = '',
+            oСhosenDay = ''; //выбранный день
 
           this.setCurrentCity(oCity);
 
-          var oTodayTime = new Date().getTime();
-
-          if (
-            this.byId("calendar").getSelectedDates()[0] &&
-            this.byId("T1").getText() !== ""
-          ) {
-            //если выбран день И выбранно время
-
-            var oСhosenDay = this.byId("calendar")
-              .getSelectedDates()[0]
-              .getStartDate()
-              .getTime(); //выбранный день
-
-            this.byId("smartForm").bindElement(
-              `/CityWeatherOnDateSet(Date=${encodeURIComponent(
-                ODataUtils.formatValue(
-                  oСhosenDay + this.getSelectTime() * 1000,
-                  "Edm.DateTime"
-                )
-              )},City='${oCity}')`
-            );
-
-            console.log(" выбран день И выбранно время");
-          } else if (
-            this.byId("calendar").getSelectedDates()[0] &&
-            this.byId("T1").getText() == ""
-          ) {
-            // если выбран ТОЛЬКО день
-            var oСhosenDay = this.byId("calendar").getSelectedDates()[0].getStartDate().getTime(); //выбранный день
-
-            this.byId("smartForm").bindElement(`/CityWeatherOnDateSet(Date=${encodeURIComponent(ODataUtils.formatValue(oСhosenDay, "Edm.DateTime"))},City='${oCity}')`);
-
-            console.log("ток день");
-
-          } else if (!this.byId("calendar").getSelectedDates()[0] && this.byId("T1").getText() !== "") {
-            // если выбранно ТОЛЬКО время
-            // var oCurDateArr = (new Date).toJSON().substring(0, 10).split('-').map(el => +el)
-
-            // var oUnixCurDate00 = ((oCurDateArr[0] - 1970) * 31556926) + (oCurDateArr[1] * 2629743) + (oCurDateArr[2] * 604800)
-
-            // this.byId('smartForm')
-            //     .bindElement(`/CityWeatherOnDateSet(Date=${encodeURIComponent(ODataUtils
-            // .formatValue(oUnixCurDate00 + this.getSelectTime()*1000, "Edm.DateTime"))},City='${oCity}')`);
-            console.log("ток время");
-          } else {
-            // если ничо не выбранно
-            this.byId("smartForm").bindElement(`${oContext.sPath}/ToCityWeather`);
-            console.log("ничо не выбранно ");
+          if (oCalendar.getSelectedDates()[0]) {
+            oСhosenDay = oCalendar.getSelectedDates()[0].getStartDate().getTime()
           }
 
-          this.getDataForViz();
+          if (this.getModelProperty('state', '/time') !== '') { //если выбран день И выбранно время
+            oSmartForm.bindElement(`/CityWeatherOnDateSet(Date=${this.formatedDate(oСhosenDay + this.getSelectTime() * 1000)},City='${oCity}')`);
+            // path = oModel.createKey('/CityWeatherOnDateSet', {
+            //   "Date": this.formatedDate(oСhosenDay + this.getSelectTime() * 1000),
+            //   "City": oCity
+            // })
+            // oSmartForm.bindElement(path)
+          } else if (this.getModelProperty('state', '/time') === '') { // если выбран ТОЛЬКО день
+            oSmartForm.bindElement(`/CityWeatherOnDateSet(Date=${this.formatedDate(oСhosenDay+10800000)},City='${oCity}')`);
+            // var dt = encodeURIComponent(ODataUtils.formatValue(oСhosenDay + 10800000, "Edm.DateTime"))
+            // path = oModel.createKey('/CityWeatherOnDateSet', {
+            //   "Date": dt,
+            //   "City": oCity
+            // })
+            // oSmartForm.bindElement(path)
+          } else { // если ничо не выбранно
+            path = oModel.createKey('/CityRegisterSet', {
+              "Country": oCountry,
+              "City": oCity
+            }) + "/ToCityWeather"
 
-          // получить значение темпы this.byId('smartForm').getBindingContext().oModel.aBindings[5].vOriginalValue
-          // console.log(`/CityWeatherOnDateSet(Date=${encodeURIComponent(ODataUtils.formatValue(oTodayTime, "Edm.DateTime"))},Lon=${oCurLongitude}M,Lat=${oCurLatitude}M)/Weather`);
-          //    `CityWeatherOnDateSet(Date=datetime'2012-01-01T00:00:00',Lon=44.555M,Lat=33.4444M)`
+            oSmartForm.bindElement(path)
+          }
+          this.getDataForViz();
         },
+
+        formatedDate: function (date) {
+          return encodeURIComponent(ODataUtils.formatValue(date, "Edm.DateTime"))
+        },
+        getModelProperty: function (model, prop) {
+          return this.getView().getModel(model).getProperty(prop)
+        },
+        // createPath: function (oEvent, entitySet, nDate, sCity, nTime) {
+        //   var aKeysOfEntitySet = oEvent.getSource().getModel().createKey(entitySet, {}).split('(')[1].split(",").map(el => el.split('=')[0])
+        //   oEvent.getSource().getModel().createKey(entitySet, {
+        //     "City": "sadgfasg"
+        //   })
+        // },
 
         // TIME PICKER
         handleOpenDialog: function () {
           var oView = this.getView();
-
           // create popover
           if (!this._pDialog) {
             this._pDialog = Fragment.load({
               id: oView.getId(),
-              name: "intheme.zweather_app.view.TimePickerSlidersDialog",
+              name: "intheme.zweather_app.view.dialogs.timePickerSlidersDialog",
               controller: this,
             }).then(
               function (oDialog) {
@@ -219,8 +214,8 @@ sap.ui.define(
 
                 oDialog.attachAfterOpen(
                   function () {
-                    var oTP = this.byId("TPS2");
-                    this._sOldValue = oTP.getValue();
+                    var oTimePicker = this.byId("timePickerSliders");
+                    this._sOldValue = oTimePicker.getValue();
                   }.bind(this)
                 );
                 return oDialog;
@@ -233,40 +228,28 @@ sap.ui.define(
         },
 
         handleOKPress: function () {
-          var oText = this.byId("T1"),
-            oTP = this.byId("TPS2");
-
+          var oTimePicker = this.byId("timePickerSliders");
           this.byId("selectTimeDialog").close();
-          oTP.collapseAll();
-
-          oText.setText(oTP.getValue());
+          this.getView().getModel('state').setProperty('/time', oTimePicker.getValue())
         },
 
         handleCancelPress: function () {
-          var oTP = this.byId("TPS2");
-
-          oTP.setValue(this._sOldValue);
-
+          var oTimePicker = this.byId("timePickerSliders");
+          oTimePicker.setValue(this._sOldValue);
           this.byId("selectTimeDialog").close();
         },
-        getSelectTime: function (oEvent) {
-          debugger;
-          if (this.byId("T1").getText() !== "") {
-            var oTimeArr = this.byId("T1")
-              .getText()
-              .split(":")
-              .map((el) => +el);
-            var hh = oTimeArr[0] * 3600;
-            var mm = oTimeArr[1] * 60;
-            var ss = oTimeArr[2];
+
+        getSelectTime: function () {
+          if (this.getModelProperty('state', '/time') !== "") {
+            var oTimeArr = this.getModelProperty('state', '/time').split(":").map((el) => +el);
             var unixTime = oTimeArr[0] * 3600 + oTimeArr[1] * 60 + oTimeArr[2];
-            console.log(unixTime);
             return unixTime;
           } else {
-            console.log(0);
             return 0;
           }
         },
+
+
 
         setCurrentCity: function (sCity) {
           this.sCity = sCity;
@@ -281,43 +264,53 @@ sap.ui.define(
         },
 
         getMaxMinTemp: function (oData) {
-          debugger
-          console.log(oData);
-        },
-
-        getMaxMinTemp: function (oData) {
-          debugger
           var oTempArr = []
           for (var i = 0; i < oData.results.length; i++) {
-            oTempArr.push(Math.floor(+oData.results[i].Temp))
+            oTempArr.push(Math.round(+oData.results[i].Temp))
           }
           var maxTemp = Math.max(...oTempArr)
           var minTemp = Math.min(...oTempArr)
           console.log(oTempArr);
           console.log(maxTemp);
           console.log(minTemp);
-          this.setMaxMinTemp(maxTemp, minTemp)
+          this.convertMinMax(maxTemp, minTemp)
+        },
+
+        convertMin: function (min) {
+          return Math.floor(min / 10) * 10
+        },
+
+        convertMax: function (max) {
+          return Math.ceil(max / 10) * 10
+        },
+
+        convertMinMax: function (max, min) {
+          let [nMax, nMin] = [0, 0]
+          if (max === min) {
+            nMax = this.convertMax(max)
+            nMin = this.convertMin(min)
+          } else {
+            nMax = max % 5 == 0 ? max + 5 : this.convertMax(max)
+            nMin = min % 5 == 0 ? min - 5 : this.convertMin(min)
+          }
+          this.setMaxMinTemp(nMax, nMin)
         },
 
         setMaxMinTemp: function (max, min) {
           this.getView().byId("idVizFrame").setVizProperties({
             plotArea: {
-
               primaryScale: {
                 fixedRange: true,
-                maxValue: Math.ceil(max / 10) * 10 + 5,
-                minValue: Math.floor(min / 10) * 10 - 5
+                maxValue: max,
+                minValue: min
               }
             },
           })
         },
 
         getDataForViz: function () {
-          debugger
           var oFilter = new sap.ui.model.Filter();
-
           var oModel = this.getView().getModel();
-          var oModelJson = new sap.ui.model.json.JSONModel();
 
           var fData = new sap.ui.model.Filter({
             path: "Date",
@@ -335,21 +328,18 @@ sap.ui.define(
           oFilter.push(fCity);
 
           sap.ui.core.BusyIndicator.show();
-          // this.byId("idVizFrame").setBusy(true)
 
           oModel.read("/CityWeatherOnDateHourlySet", {
             filters: oFilter,
             success: function (oData) {
-              // this.byId("idVizFrame").setBusy(false)
               this.prepareViz(oData.results);
               this.getMaxMinTemp(oData)
               sap.ui.core.BusyIndicator.hide();
 
             }.bind(this),
             error: function () {
-              debugger;
+
               sap.ui.core.BusyIndicator.hide();
-              // this.byId("idVizFrame").setBusy(false)
               console.log("error");
             }.bind(this)
           });
@@ -358,27 +348,18 @@ sap.ui.define(
         prepareViz: function (oData) {
           Format.numericFormatter(ChartFormatter.getInstance());
           var formatPattern = ChartFormatter.DefaultPattern;
-
           var oVizFrame = this.getView().byId("idVizFrame");
-
           oVizFrame.setVizProperties({
             plotArea: {
               window: {
                 start: "firstDataPoint",
                 end: "lastDataPoint",
               },
-
               dataLabel: {
                 formatString: formatPattern.SHORTFLOAT_MFD2,
                 visible: false,
               },
-              primaryScale: {
-                fixedRange: true,
-                maxValue: 40,
-                minValue: 10
-              }
             },
-
             legend: {
               visible: false,
               title: {
@@ -393,34 +374,25 @@ sap.ui.define(
                 visible: true,
                 text: "Температура",
               }
-
             },
-
             timeAxis: {
               title: {
                 visible: true,
                 text: "Время",
               },
-
               interval: {
                 unit: "",
               },
               levels: ["day", "hour", "minute"],
-
-
             },
-
             title: {
               visible: true,
               text: "Температура за день",
             },
-
             interaction: {
               syncValueAxis: false,
-
             }
           });
-
           oVizFrame.setVizScales({
             scales: {
               valueAxis: {
@@ -436,8 +408,27 @@ sap.ui.define(
             Chart: oData
           });
           oVizFrame.setModel(oJson, "TempHourlyMdl");
-        }
+        },
+
+        whereIAm: function () {
+          var url = "https://ipinfo.io/?token=fbd7ce3541827b";
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", url);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              console.log(JSON.parse(xhr.responseText).city);
+              go(JSON.parse(xhr.responseText).city)
+            }
+          };
+          xhr.send();
+          let go = city => {
+            if (city) {
+              var oСhosenDay = this.byId("calendar").getSelectedDates()[0].getStartDate().getTime(); //выбранный день
+              this.byId("smartForm").bindElement(`/CityWeatherOnDateSet(Date=${this.formatedDate(oСhosenDay+10800000)},City='${city}')`);
+              this.getDataForViz()
+            }
+          }
+        },
       }
     );
-  }
-);
+  });

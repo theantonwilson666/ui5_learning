@@ -1,0 +1,27 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:l="sap.ui.layout"
+        xmlns:smartField="sap.ui.comp.smartfield">
+    <Dialog class="sapUiSizeCompact"
+            title="{i18n>newCityRegisterSetTitle}"
+            contentWidth="25%"
+            contentHeight="50%">
+        <content>
+            <VBox>
+                <Label text="{/#CityRegisterSet/CityRegisterSetID/@sap:label}" labelFor="ID" design="Bold" />
+                <smartField:SmartField id="ID" value="{CityRegisterSetID}" editable="true"/>
+                <Label text="{/#CityRegisterSet/City/@sap:label}" labelFor="Title" design="Bold" />
+                <smartField:SmartField id="City" value="{City}" editable="true"/>
+                <Label text="{/#CityRegisterSet/EventDate/@sap:label}" labelFor="EventDate" design="Bold" />
+                <smartField:SmartField id="EventDate" value="{EventDate}" editable="true"/>
+                <Label text="{/#CityRegisterSet/Description/@sap:label}" labelFor="Description" design="Bold" />
+                <smartField:SmartField id="Description" value="{Description}" editable="true"/>
+            </VBox>
+        </content>
+        <buttons>
+            <Button text="{i18n>NewCityRegisterSet}" press="onNewCityRegisterSetInList" type="Emphasized"/>
+            <Button text="{i18n>CancelBtn}" press="onCloseNewCityRegisterSet"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

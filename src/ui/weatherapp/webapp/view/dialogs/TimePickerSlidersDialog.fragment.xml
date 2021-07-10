@@ -4,8 +4,8 @@
     <Dialog
 		id="selectTimeDialog"
 		title="Select New Time">
-        <TimePickerSliders
-			id="TPS2"
+        <timePickerSliders
+			id="timePickerSliders"
 			change="handleChange"
 			height="400px"/>
         <buttons>

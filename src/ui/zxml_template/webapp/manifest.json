@@ -1,0 +1,132 @@
+{
+  "_version": "1.0.0",
+  "sap.app": {
+    "id": "z.xml.tmpl",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZUI5_DYNAMIC_TAB_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml",
+          "annotations": [
+            "local"
+          ]
+        }
+      },
+      "local": {
+        "type": "ODataAnnotation",
+        "uri": "localService/annotation.xml",
+        "settings": {
+          "localUri": "localService/annotation.xml"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "z.xml.tmpl.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.60.6",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {},
+        "sap.f": {},
+        "sap.ui.comp": {},
+        "sap.ui.table": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "z.xml.tmpl.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "preload": true,
+        "settings": {
+          "defaultOperationMode": "Server",
+          "refreshAfterChange": false,
+          "defaultCountMode": "Inline",
+          "defaultBindingMode": "TwoWay",
+          "useBatch": true
+        }
+      },
+      "state": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {
+          "toActions": {
+            "section1Hidden": true,
+            "section2Hidden": false,
+            "section3Hidden": true,
+            "role": "Admin",
+            "createProjectHidden": true,
+            "removeProjectHidden": false
+          },
+          "toButtons": [
+            {
+              "name": "Скопировать проект",
+              "functionImport": "createProject"
+            },
+            {
+              "name": "Удалить проект",
+              "functionImport": "removeProject"
+            }
+          ],
+          "groups": [
+            {
+              "name": "Группа 1",
+              "count": 10
+            },
+            {
+              "name": "Группа 2",
+              "count": 15
+            }
+          ]
+        }
+      }
+    }
+  }
+}

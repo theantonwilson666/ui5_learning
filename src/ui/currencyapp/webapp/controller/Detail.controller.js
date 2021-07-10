@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "intheme/currency/controller/Main.controller",
     "sap/ui/unified/DateRange",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/core/format/DateFormat",
     "sap/ui/core/library",
     "sap/viz/ui5/format/ChartFormatter",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     DateRange,
-    JSONModelg,
     DateFormat,
     coreLibrary,
     ChartFormatter,
@@ -29,9 +27,6 @@ sap.ui.define(
           this.getRouter()
             .getRoute("DetailRoute")
             .attachPatternMatched(this._onRouteMatched, this);
-          //свойство график
-          //oViewModel.setProperty("/chart/", this._chart);
-          // календарь
           this.oFormatYyyymmdd = DateFormat.getInstance({
             pattern: "yyyy-MM-dd",
             calendarType: CalendarType.Gregorian,
@@ -42,12 +37,10 @@ sap.ui.define(
 
           var oRowContext = this.getStateProperty("/currentRow");
 
-          this.getView().byId("AnyCoeff").setText(oRowContext.Coeff);
-          this.getView().byId("AnySourceCurr").setText(oRowContext.SourceCurr);
-          this.getView()
-            .byId("AnyCurrencyDescr")
-            .setText(oRowContext.CurrencyDescr);
-          this.getView().byId("AnyCurrencyId").setText(oRowContext.CurrencyId);
+          this.getView().byId("AnyCoeff").setProperty("text", oRowContext.Coeff);
+          this.getView().byId("AnySourceCurr").setProperty("text", oRowContext.SourceCurr);
+          this.getView().byId("AnyCurrencyDescr").setProperty("text", oRowContext.CurrencyDescr);
+          this.getView().byId("AnyCurrencyId").setProperty("text", oRowContext.CurrencyId);
 
           this.getView()
             .byId("DetailBox")
@@ -57,6 +50,7 @@ sap.ui.define(
         },
 
         handleCalendarSelect: function (oEvent) {
+
           var oCalendar = oEvent.getSource();
           if (oCalendar.getSelectedDates()[0].getEndDate()) {
             this.getDataForViz(
@@ -65,31 +59,6 @@ sap.ui.define(
             );
           }
         },
-
-        // _updateText: function(oSelectedDates) {
-        //   debugger
-        //   var oSelectedDateFrom = this.byId("selectedDateFrom"),
-        //     oSelectedDateTo = this.byId("selectedDateTo"),
-        //     oDate;
-
-        //   if (oSelectedDates) {
-        //     oDate = oSelectedDates.getStartDate();
-        //     if (oDate) {
-        //       oSelectedDateFrom.setText(this.oFormatYyyymmdd.format(oDate));
-        //     } else {
-        //       oSelectedDateTo.setText("No Date Selected");
-        //     }
-        //     oDate = oSelectedDates.getEndDate();
-        //     if (oDate) {
-        //       oSelectedDateTo.setText(this.oFormatYyyymmdd.format(oDate));
-        //     } else {
-        //       oSelectedDateTo.setText("No Date Selected");
-        //     }
-        //   } else {
-        //     oSelectedDateFrom.setText("No Date Selected");
-        //     oSelectedDateTo.setText("No Date Selected");
-        //   }
-        // },
 
         handleSelectThisWeek: function () {
           this._selectWeekInterval(6);
@@ -126,10 +95,12 @@ sap.ui.define(
             new DateRange({ startDate: oMonday, endDate: oSunday })
           );
 
-          // this._updateText(oCalendar.getSelectedDates()[0]);
         },
         getCurrencyId: function () {
           return this.byId("AnyCurrencyId").mProperties.text;
+        },
+        getCurrencyId2: function () {
+          return this.byId("currencyInput2").getProperty("value");
         },
 
         getSelectedDateFrom: function () {
@@ -158,8 +129,9 @@ sap.ui.define(
           });
           var fValue = new sap.ui.model.Filter({
             path: "CurrencyId",
-            operator: sap.ui.model.FilterOperator.EQ,
-            value1: this.getCurrencyId(),
+            operator: sap.ui.model.FilterOperator.Contains,
+            value1: this.getCurrencyId2(),
+            value2: this.getCurrencyId()
           });
 
           var oFilter = new Array();
@@ -177,19 +149,19 @@ sap.ui.define(
           });
         },
 
-        getMaxMinRate: function(oData){
+        // getMaxMinRate: function(oData){
 
-          var aArr = [];
+        //   var aArr = [];
 
-          oData.forEach(item=>{
-            aArr.push(item.CurrencyAmount);
-          })
+        //   oData.forEach(item=>{
+        //     aArr.push(item.CurrencyAmount);
+        //   })
 
-          return {
-            max : Math.max(...aArr),
-            min : Math.min(...aArr)
-          };
-        },
+        //   return {
+        //     max : Math.max(...aArr),
+        //     min : Math.min(...aArr)
+        //   };
+        // },
 
 
         prepareViz: function (oData) {
@@ -198,7 +170,7 @@ sap.ui.define(
 
           var oVizFrame = this.getView().byId("idVizFrame");
 
-          var oMaxMin = this.getMaxMinRate(oData);
+          // var oMaxMin = this.getMaxMinRate(oData);
 
           oVizFrame.setVizProperties({
             plotArea: {
@@ -214,8 +186,8 @@ sap.ui.define(
 
               primaryScale: {
                 fixedRange: true,
-                maxValue: Math.round(oMaxMin.max + 5),
-                minValue: Math.round(oMaxMin.min - 5)
+                // maxValue: Math.round(oMaxMin.max + 5),
+                // minValue: Math.round(oMaxMin.min - 5)
               }
             },
             legend: {

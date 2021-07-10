@@ -9,10 +9,7 @@ dist/
 sapui5-dist-static/
 package-lock.json
 package.json
-Gruntfile.js
-README.MD
-fiorisandbox/
-.idea/
+
 # Compiled Java class files
 *.class
 

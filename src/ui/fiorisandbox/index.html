@@ -29,32 +29,46 @@
           },
         },
         applications: {
-         
-
-          // "ivan_app-display": {
-          //   additionalInformation: "SAPUI5.Component=intheme.ivan_app",
-          //   applicationType: "URL",
-          //   url: "/ui/googlebook/webapp",
-          //   description: "любимые книжки",
-          //   title: "Google Book",
-          // },
+          "currency-display": {
+            additionalInformation: "SAPUI5.Component=intheme.currency",
+            applicationType: "URL",
+            url: "/ui/currencyapp/webapp/",
+            description: "тупо майнеры",
+            title: "Курс Валют",
+          },
 
           "ivan_app-display": {
             additionalInformation: "SAPUI5.Component=intheme.ivan_app",
             applicationType: "URL",
-            url: "/ui/googlebook/webapp_2",
-            description: "test",
-            title: "my",
+            url: "/ui/googlebook/webapp",
+            description: "любимые книжки",
+            title: "Google Book",
           },
 
-          
-          "template-display": {
-            additionalInformation: "SAPUI5.Component=z.xml.tmpl",
+           "NewsProject-display": {
+            additionalInformation: "SAPUI5.Component=intheme.NewsProject",
             applicationType: "URL",
-            url: "/ui/zxml_template/webapp/",
-            description: "temp",
-            title: "TEMP",
+            url: "/ui/newsapp/webapp",
+            description: "хм, что нас ждет сегодня",
+            title: "САМЫЕ СВЕЖИЕ НОВОСТИ",
+           },
+
+           "zui5_pokemons-display": {
+            additionalInformation: "SAPUI5.Component=intheme.zui5_pokemons",
+            applicationType: "URL",
+            url: "/ui/pokemonapp/webapp",
+            description: "они среди нас кста",
+            title: "П О К Е М О Н Ы",
           },
+
+          "zweather_app-display": {
+            additionalInformation: "SAPUI5.Component=intheme.zweather_app",
+            applicationType: "URL",
+            url: "/ui/weatherapp/webapp",
+            description: "мм, ветерок подул",
+            title: "Погодная приколюха",
+          }
+          
 
 
         },
@@ -72,11 +86,10 @@
       data-sap-ui-theme="sap_belize"
       data-sap-ui-compatVersion="edge"
       data-sap-ui-resourceroots='{
-               
-                "z.xml.tmpl": "../zxml_template/webapp",
+                "intheme.currency": "../currencyapp/webapp",
                 "intheme.ivan_app": "../googlebook/webapp",
-                "intheme.ivan_app": "../googlebook/webapp_2"
-              
+                "intheme.NewsProject": "../newsapp/webapp",
+                "intheme.zui5_pokemons": "../pokemonapp/webapp"
 			}'
       data-sap-ui-frameOptions="allow"
       data-sap-ui-language="ru"

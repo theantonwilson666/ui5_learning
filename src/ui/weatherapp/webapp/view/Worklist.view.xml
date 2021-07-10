@@ -6,28 +6,37 @@
         xmlns:u="sap.ui.unified"
 		xmlns="sap.m"
 		xmlns:f="sap.f"
-		xmlns:fb='sap.ui.comp.filterbar'
-		xmlns:form="sap.ui.layout.form"
-		xmlns:sv='sap.ui.comp.smartvariants'
 		xmlns:smartFilterBar='sap.ui.comp.smartfilterbar'
 		xmlns:smartTable='sap.ui.comp.smarttable'
 		xmlns:smartField='sap.ui.comp.smartfield'
 		xmlns:core='sap.ui.core'
-        xmlns:vbm="sap.ui.vbm"
         xmlns:viz="sap.viz.ui5.controls"
         xmlns:viz.data="sap.viz.ui5.data"
         xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-		xmlns:html="http://www.w3.org/1999/xhtml"
-		xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns:smartForm="sap.ui.comp.smartform"
-        xmlns:card="sap.f.cards"
-        xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
         xmlns:vizData="sap.viz.ui5.data" 
         xmlns:data="sap.viz.ui5.data"
-        xmlns:feed="sap.viz.ui5.controls.common.feeds"
-         xmlns:layout="sap.ui.layout"
-        xmlns:w="sap.ui.integration.widgets">
+        xmlns:layout="sap.ui.layout">
+    <IconTabHeader   select='selectPage'>
+        <items>
+            <IconTabFilter id='weatherFltr' key="weatherPage" text="погода" />
+            <IconTabFilter id='earthquakeFltr' key="earthquakePage" text="землетрясение" />
+        </items>
+    </IconTabHeader>
+    <IconTabHeader id='weatherPageHeader' select='selectPage' visible='true'>
+        <items>
+            <IconTabFilter key="weatherCityList" text="Список городов" />
+            <IconTabFilter key="weatherCalendar" text="Календарь" />
+            <IconTabFilter key="weatherForecast" text="Прогноз" />
+        </items>
+    </IconTabHeader>
+    <IconTabHeader id='earthquakePageHeader' select='selectPage' visible='false'>
+        <items>
+            <IconTabFilter key=" " text="Список городов" />
+            <IconTabFilter key=" " text="Землетряс" />
+        </items>
+    </IconTabHeader>
     <f:DynamicPage 
             showFooter="{state>/editMode}" 
             toggleHeaderOnTitleClick="true" 
@@ -37,15 +46,25 @@
         	backgroundDesign= "Solid"
         	id="GMapPage">
         <f:content>
-            <VBOx 
+            <VBox
                 fitContainer='true'
                 justifyContent='Center'>
-                <l:HorizontalLayout>
-                    <l:VerticalLayout>
-                        <!-- SMART FILTER BAR -->
-                        <l:VerticalLayout>
+                <FlexBox  id='weatherPage'
+                direction="Column"
+                alignItems='Center'>
+                    <FlexBox id='weatherCityList'
+                            direction="Column"
+			        	    justifyContent="Start"
+                            alignItems='Center'>
+                        <Text textAlign='Center' text='Выберите город' class='takeCity'/>
+                        <Button
+                                class='sapUiSmallMargin'
+                                text='Текущая геолокация'
+                                press='whereIAm'/>
+                        <VBox>
+                            <!-- SMART FILTER BAR -->
                             <smartFilterBar:SmartFilterBar
-                            class="sapUiSmallMarginTop  sapUiLargeMarginBegin sapUiSmallMarginEnd"
+                                class="sapUiSmallMarginTop  sapUiLargeMarginBegin sapUiSmallMarginEnd"
                                 id="weatherlFilterBar"
                                 entitySet="CityRegisterSet"
                                 useToolbar="false"
@@ -54,176 +73,85 @@
                                 showFilterConfiguration="false"
                                 useDateRangeType="true"
                                 liveMode="false">
-                        </smartFilterBar:SmartFilterBar>
+                            </smartFilterBar:SmartFilterBar>
                             <smartTable:SmartTable
-                            class=" sapUiLargeMarginBegin sapUiSmallMarginEnd"
+                                class=" sapUiLargeMarginBegin sapUiSmallMarginEnd"
                                 id="weatherlSmartTab"
                                 header="{i18n>TableTitle}"
                                 entitySet="CityRegisterSet"
                                 useExportToExcel="false"
-                                showRowCount="true"
                                 tableType="ResponsiveTable"
                                 useVariantManagement="false"
                                 useTablePersonalisation="true"
-                                showFullScreenButton="false"
                                 enableAutoBinding="true"
-                                requestAtLeastFields="City,Country,Longitude,Latitude"
                                 demandPopin="true"
                                 editTogglable="true"
                                 editable="{state>/editMode}"
                                 editToggled="onEditToggled"
                                 smartFilterId="weatherlFilterBar">
-                                <smartTable:customToolbar>
-                                    <OverflowToolbar design="Transparent">
-                                        <ToolbarSpacer/>
-                                        <Button icon="sap-icon://refresh"
-                                        type="Transparent"
-                                        press="rebindTable"/>
-                                        <Button 
-                                        type="Transparent"
-                                        iconFirst="false"
-                                        enabled="{state>/editMode}"
-                                        icon="sap-icon://add"
-                                        press="onAddWeather"/>
-                                    </OverflowToolbar>
-                                </smartTable:customToolbar>
                                 <Table 
+                                    mode='SingleSelect'
+                                    includeItemInSelection="true"
                                     sticky="ColumnHeaders"
-                                 	
                                     alternateRowColors="true"
                                     growing="true"
-                                    fixedLayout="false"
+                                    fixedLayout="true"
                                     growingThreshold="27"
-                                    growingScrollToLoad="false"
-                                    mode="{= (${state>/editMode} === true) ? 'Delete' : 'None'}"
-                                    selectionChange="NOFUNK">
-                                    <columns>
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "0",
-                                                                    "columnKey": "City",
-                                                                    "leadingProperty": "City",
-                                                                    "sortProperty": "City",
-                                                                    "filterProperty": "City"
-                                                                }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CityRegister/City/@sap:label}"/>
-                                            </header>
-                                        </Column>
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "1",
-                                                                    "columnKey": "Latitude",
-                                                                    "leadingProperty": "Latitude",
-                                                                    "sortProperty": "Latitude",
-                                                                    "filterProperty": "Latitude"
-                                                                }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CityRegister/Latitude/@sap:label}"/>
-                                            </header>
-                                        </Column>
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "2",
-                                                                    "columnKey": "Longitude",
-                                                                    "leadingProperty": "Longitude",
-                                                                    "sortProperty": "Longitude",
-                                                                    "filterProperty": "Longitude"
-                                                                }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CityRegister/Longitude/@sap:label}"/>
-                                            </header>
-                                        </Column>
-                                        <Column>
-                                            <customData>
-                                                <core:CustomData key="p13nData"
-                                                        value='\{
-                                                                    "columnIndex": "3",
-                                                                    "columnKey": "Country",
-                                                                    "leadingProperty": "Country",
-                                                                    "sortProperty": "Country",
-                                                                    "filterProperty": "Country"
-                                                                }'/>
-                                            </customData>
-                                            <header>
-                                                <Text text="{/#CityRegister/Country/@sap:label}"/>
-                                            </header>
-                                        </Column>
-                                    </columns>
-                                    <items>
-                                        <ColumnListItem type="Active" press=".onSelectCity">
-                                            <cells>
-                                                <smartField:SmartField value="{City}" editable="{state>/editMode}"/>
-                                            </cells>
-                                            <cells>
-                                                <Text text="{
-                                                path:'Latitude',
-                                                formatter: '.commonFormatter.cutLonLat'}"/>
-                                            </cells>
-                                            <cells>
-                                                <Text text="{
-                                                path:'Longitude' ,
-                                                formatter:'.commonFormatter.cutLonLat'}" />
-                                            </cells>
-                                            <cells>
-                                                <smartField:SmartField value="{Country}" editable="{state>/editMode}"/>
-                                            </cells>
-                                        </ColumnListItem>
-                                    </items>
+                                    growingScrollToLoad="true"
+                                    selectionChange="onSelectCity">
                                 </Table>
                             </smartTable:SmartTable>
-                        </l:VerticalLayout>
-                    </l:VerticalLayout>
-                    <l:VerticalLayout>
-                        <VBox class="sapUiSmallMargin">
-                            <HBox>
-                                <u:CalendarLegend id="legend"/>
+                        </VBox>
+                    </FlexBox>
+                    <FlexBox id='weatherCalendar'
+                            direction="Column"
+                            justifyContent="Start"
+                            alignItems='Center' 
+                            visible='false'>
+                        <Text class='takeCity' text='Выберите дату'></Text>
+                        <VBox class="sapUiSmallMargin hm">
+                            <VBox >
+                                <u:CalendarLegend id="legend">
+                                    <u:items>
+                                        <u:CalendarLegendItem text='активные дни'/>
+                                    </u:items>
+                                </u:CalendarLegend>
                                 <u:Calendar
+                                width="100%"
 			                        id="calendar"
                                     legend="legend" 
 			                        select="handleCalendarSelect" />
-                            </HBox>
-                            <Button
-			                    press="handleSelectToday"
+                            </VBox>
+                            <HBox  >
+                                <Button
+                                class='sapUiSmallMargin'
+			                    press="getWorkerCalendar"
 				                text="Сегодняшний день" />
-                            <Button  
+                                <Button  
+                                class='sapUiSmallMargin'
                                     press="handleOpenDialog" 
-                                    text="Время"  
-                                   />
-                            <Text 
-                                    id="T1" 
-                                    text="" 
-                                    class="sapUiSmallMargin" />
-                            <HBox>
-                                <Label
-					            text="Selected Date (yyyy-mm-dd):"
-					            class="labelMarginLeft" />
-                                <Text
-					            id="selectedDate"
-					            text="No Date Selected"
-					            class="labelMarginLeft"/>
+                                    text="Выбрать время"/>
                             </HBox>
-                            <HBox>
-                                <Label
-					            text="unix date:"
-					            class="labelMarginLeft" />
-                                <Text
-					            id="unixDate"
-					            text="No Date Selected"
-					            class="labelMarginLeft"/>
-                            </HBox>
+                            <VBox class="sapUiSmallMargin">
+                                <HBox>
+                                    <Label
+					                text="Время:"
+					                class="labelMarginLeft" />
+                                    <Text id="timeText" text='{state>/time}'/>
+                                </HBox>
+                                <HBox>
+                                    <Label
+					                text="Дата:"
+					                class="labelMarginLeft" />
+                                    <Text id="selectedDate"/>
+                                </HBox>
+                            </VBox>
                         </VBox>
+                    </FlexBox>
+                    <l:VerticalLayout id='weatherForecast'
+                     visible='false'>
                         <smartForm:SmartForm 	
-                        class="sapUiSmallMargin"		
+                        class="sapUiSmallMargin hm"		
                              id="smartForm"
                              app:defaultCheckBoxDisplayBehaviour="OnOff"
                              app:defaultDropDownDisplayBehaviour="idAndDescription"
@@ -245,18 +173,21 @@
                                     </HBox>
                                 </smartForm:GroupElement>
                                 <smartForm:GroupElement>
+                                    <smartField:SmartField value="{SunRise}" />
+                                </smartForm:GroupElement>
+                                <smartForm:GroupElement>
                                     <smartField:SmartField value="{SunSet}" />
                                 </smartForm:GroupElement>
                                 <smartForm:GroupElement>
-                                    <smartField:SmartField value="{City}" />
+                                    <smartField:SmartField id='thisCity' value="{City}" />
                                 </smartForm:GroupElement>
                                 <smartForm:GroupElement>
-                                    <smartField:SmartField value="{Error}" />
+                                    <smartField:SmartField id="isError" value="{Error}" />
                                 </smartForm:GroupElement>
                             </smartForm:Group>
                         </smartForm:SmartForm>
-                        <layout:FixFlex  id='chartFixFlex' minFlexSize="450" class="graphFixFlex">
-                            <layout:flexContent class="graphFlexContent">
+                        <layout:FixFlex  id='chartFixFlex' minFlexSize="450" class="graphFixFlex hm">
+                            <layout:flexContent>
                                 <viz:Popover id="idPopOver"></viz:Popover>
                                 <viz:VizFrame 
                                     id="idVizFrame" 
@@ -284,9 +215,13 @@
                             </layout:flexContent>
                         </layout:FixFlex>
                     </l:VerticalLayout>
-                </l:HorizontalLayout>
+                </FlexBox>
                 <!-- MAP HERE -->
-            </VBOx>
+                <l:HorizontalLayout id='earthquakePage'
+                visible="false">
+                    <Text text='earth'/>
+                </l:HorizontalLayout>
+            </VBox>
         </f:content>
         <f:footer>
         </f:footer>

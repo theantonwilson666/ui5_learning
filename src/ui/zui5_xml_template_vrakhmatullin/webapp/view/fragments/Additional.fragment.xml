@@ -1,0 +1,50 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1">
+
+    <f:GridList items="{path: 'facet>Target', formatter: 'AH.getNavigationPath'}">
+        <template:with path="facet>Target" helper="AH.gotoEntitySet" var="entitySet">
+            <template:with path="entitySet>entityType" helper="AH.gotoEntityType" var="entityType">
+                <template:repeat list="{entityType>com.sap.vocabularies.UI.v1.LineItem}" var="item">
+                    <f:GridListItem>
+                        <VBox fitContainer="true" height="100%" class="sapUiSmallMargin">
+                            <FlexBox alignItems="Center">
+                                <VBox class="sapUiSmallMarginBottom">
+                                    <template:with path="item>Value" helper="AH.resolvePath" var="navPath">
+                                        <Title text="{path: 'navPath>com.sap.vocabularies.Common.v1.Label', formatter:'AH.format'} 
+                                                     | {path: 'item>Value', formatter:'AH.format'}" 
+                                               wrapping="true"/>
+                                    </template:with>
+                                </VBox>
+                            </FlexBox>
+                            <FlexBox>
+                                <template:repeat list="{entityType>com.sap.vocabularies.UI.v1.Facets}" var="facet_row">
+                                    <VBox items="{path: 'facet_row>Target', formatter: 'AH.getNavigationPath'}">
+                                        <template:with path="facet_row>Target" helper="AH.gotoEntitySet" var="cellSet">
+                                            <template:with path="cellSet>entityType" helper="AH.gotoEntityType" var="cellType">
+                                                <VBox class="sapUiTinyMargin">
+                                                    <template:repeat list="{cellType>com.sap.vocabularies.UI.v1.LineItem}" var="cell">
+                                                        <template:with path="cell>Value" helper="AH.resolvePath" var="cellNavPath">
+                                                            <Label text="{path: 'cell>Value', formatter:'AH.format'}" wrapping="true"/>
+                                                        </template:with>
+                                                    </template:repeat>
+                                                    <template:with path="cellType>com.sap.vocabularies.UI.v1.FieldGroup" var="cellGroup">
+                                                        <template:repeat list="{cellGroup>Data}">
+                                                            <Text text="{path: 'cellGroup>Value', formatter:'AH.format'}" wrapping="true"/>
+                                                        </template:repeat>
+                                                    </template:with>
+                                                </VBox>
+                                            </template:with>
+                                        </template:with>
+                                    </VBox>
+                                </template:repeat>
+                            </FlexBox>
+                        </VBox>
+                    </f:GridListItem>
+                </template:repeat>
+            </template:with>
+        </template:with>
+    </f:GridList>
+</core:FragmentDefinition>
